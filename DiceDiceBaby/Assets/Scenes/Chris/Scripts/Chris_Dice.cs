@@ -70,6 +70,11 @@ public class Chris_Dice : MonoBehaviour
         return false;
     }
 
+    public bool doneRolling()
+    {
+        return body.IsSleeping();
+    }
+
     public Chris_Side getSideOnGround()
     {
         for (int i = 0; i < Sides.Length; i++)

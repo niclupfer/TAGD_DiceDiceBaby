@@ -16,7 +16,7 @@ public class Chris_Player : MonoBehaviour
             bool allDiceDown = true;
             for (int i = 0; i < diceInventory.Count; i++)
             {
-                if(!diceInventory[i].isSideOnGround())
+                if(!diceInventory[i].isSideOnGround() || !diceInventory[i].doneRolling())
                 {
                     allDiceDown = false;
                     break;
