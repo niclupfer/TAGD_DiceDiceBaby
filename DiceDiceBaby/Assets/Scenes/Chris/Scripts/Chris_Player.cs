@@ -5,16 +5,63 @@ using UnityEngine;
 public class Chris_Player : MonoBehaviour
 {
 
-    public Chris_Dice []diceInventory;
+    public List<Chris_Dice> diceInventory;
+    bool rolledDice;
+    bool diceFinishedRolling;
 
-    public Chris_Side[] rollInventory()
+    private void Update()
     {
-        Chris_Side[] rolledSides = new Chris_Side[diceInventory.Length];
-        for (int i = 0; i < diceInventory.Length; i++)
+        if(rolledDice && !diceFinishedRolling)
         {
-            rolledSides[i] = diceInventory[i].rollDice();
+            bool allDiceDown = true;
+            for (int i = 0; i < diceInventory.Count; i++)
+            {
+                if(!diceInventory[i].isSideOnGround())
+                {
+                    allDiceDown = false;
+                    break;
+                }
+            }
+            if (allDiceDown)
+            {
+                diceFinishedRolling = true;
+                foreach (Chris_Dice die in diceInventory)
+                {
+                    Debug.Log(die.getSideOnGround().ToString());
+                }
+
+            }
+            
         }
-        return rolledSides;
+    }
+
+    public void rollInventory()
+    {
+        rolledDice = true;
+        foreach (Chris_Dice die in diceInventory)
+        {
+            die.rollDice();
+        }
+    }
+
+    public void resetInventory()
+    {
+        rolledDice = false;
+        diceFinishedRolling = false;
+        foreach (Chris_Dice die in diceInventory)
+        {
+            die.resetDie();
+        }
+    }
+
+    public void clearIncentory()
+    {
+        diceInventory.Clear();
+    }
+
+    public void addDice(Chris_Dice d)
+    {
+        diceInventory.Add(d);
     }
 
 }

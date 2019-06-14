@@ -2,16 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Chris_Side
+public class Chris_Side : MonoBehaviour
 {
     //current Symbol and Value corresponding to it
     public Face Symbol;
     public int Value;
+    bool onGround;
+
+    private void Start()
+    {
+        onGround = false;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Floor")) onGround = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Floor")) onGround = false;
+    }
+
+    public bool faceDown()
+    {
+        return onGround;
+    }
+
+    public Chris_Side getSide()
+    {
+        return this;
+    }
 
     public override string ToString()
     {
-        return Symbol.ToString() + " " + Value; 
+        return Symbol.ToString() + " " + Value;
     }
 }
 
