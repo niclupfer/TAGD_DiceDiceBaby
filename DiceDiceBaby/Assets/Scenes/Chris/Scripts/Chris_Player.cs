@@ -8,6 +8,7 @@ public class Chris_Player : MonoBehaviour
     public List<Chris_Dice> diceInventory;
     bool rolledDice;
     bool diceFinishedRolling;
+    public Vector3 diceLocation;
 
     private void Update()
     {
@@ -62,6 +63,8 @@ public class Chris_Player : MonoBehaviour
     public void addDice(Chris_Dice d)
     {
         diceInventory.Add(d);
+        d.transform.position = diceLocation - new Vector3(0, 0, 2 * diceInventory.Count - 1); ;
+        d.startPos = diceLocation - new Vector3(0,0, 2 * diceInventory.Count - 1);// add an offset so dice are not on top of eachother
     }
 
 }

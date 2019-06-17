@@ -1,19 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Chris_Dice : MonoBehaviour
 {
+    //rolling variables
     public Chris_Side[] Sides;
     public Vector3 startPos;
     Rigidbody body;
     bool hasLanded;
     bool hasRolled;
 
+    //drafting variables
+    bool isSelected = false;
+
+
     private void Start()
     {
-        body = GetComponent<Rigidbody>();
+        Random.InitState((int)System.DateTime.Now.Ticks);
+        body = GetComponent<Rigidbody>();//set up variables and states
         hasLanded = false;
         hasRolled = false;
         body.useGravity = false;
@@ -21,14 +28,14 @@ public class Chris_Dice : MonoBehaviour
 
     private void Update()
     {
-        if(hasRolled && !hasLanded && body.IsSleeping())
+        if(hasRolled && !hasLanded && body.IsSleeping())//if dice has stopped moving after having been rolled its landed
         {
             hasLanded = true;
             body.useGravity = false;
         }
-        else if(hasRolled && hasLanded && body.IsSleeping())
+        else if(hasRolled && hasLanded && body.IsSleeping())//if the dice has landed and is not moving
         {
-            if(!isSideOnGround())
+            if(!isSideOnGround())//check if at lease one side is on the ground if not launch itself
             {
                 hasLanded = false;
                 body.useGravity = true;
@@ -36,10 +43,10 @@ public class Chris_Dice : MonoBehaviour
                 body.AddForce(new Vector3(Random.Range(-1000, 1000), Random.Range(0, 1000), Random.Range(-1000, 1000)));
             }        
         }
-        else if(hasRolled && !body.IsSleeping())body.useGravity = true;
+        else if(hasRolled && !body.IsSleeping())body.useGravity = true;//else if floating in space just land
     }
 
-    public void resetDie()
+    public void resetDie()//go abck to roll posistion
     {
         body.useGravity = false;
         body.MovePosition(startPos);
@@ -52,7 +59,7 @@ public class Chris_Dice : MonoBehaviour
 
     public void rollDice()
     {
-        if(!hasRolled && !hasLanded)
+        if(!hasRolled && !hasLanded)//if hasent been rolled roll it
         {
             hasRolled = true;
             body.useGravity = true;
@@ -61,7 +68,7 @@ public class Chris_Dice : MonoBehaviour
         }
     }
 
-    public bool isSideOnGround()
+    public bool isSideOnGround()//check if a side is on the ground
     {
         for (int i = 0; i < Sides.Length; i++)
         {
@@ -70,18 +77,50 @@ public class Chris_Dice : MonoBehaviour
         return false;
     }
 
-    public bool doneRolling()
+    public bool doneRolling()//is the dice done rolling?
     {
         return body.IsSleeping();
     }
 
-    public Chris_Side getSideOnGround()
+    public Chris_Side getSideOnGround()//return the side thats on the ground
     {
         for (int i = 0; i < Sides.Length; i++)
         {
             if (Sides[i].faceDown() == true) return Sides[i];
         }
         return null;
+    }
+
+    /***********************************************Drafting functions Start*********************************/
+    private void OnMouseDown()
+    {
+        //open a dice info screen, show a select buttion
+        if(!isSelected && !hasRolled && Chris_GameController.pickPhase)
+        {
+            //deselect all other dice
+            Chris_GameController.gameController.deselectDice();
+            isSelected = true;
+            //show dice infomation
+            Chris_GameController.gameController.currentSelected = this;
+            Chris_GameController.gameController.updateDiceInfo();
+            //allow select
+            
+        }
+    }
+
+    public void deSelect()
+    {
+        isSelected = false;
+    }
+
+    public override string ToString()
+    {
+        string info = "";
+        foreach (Chris_Side side in Sides)
+        {
+            info += side.ToString() + "\n";
+        }
+        return info;
     }
 
 }

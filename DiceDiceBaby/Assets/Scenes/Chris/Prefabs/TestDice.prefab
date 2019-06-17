@@ -119,6 +119,8 @@ MonoBehaviour:
   - {fileID: 3676084170338424953}
   - {fileID: 7371989686611457601}
   startPos: {x: 0, y: 0, z: 0}
+  infoText: {fileID: 0}
+  infoPanel: {fileID: 0}
 --- !u!54 &8900254500631766624
 Rigidbody:
   m_ObjectHideFlags: 0
