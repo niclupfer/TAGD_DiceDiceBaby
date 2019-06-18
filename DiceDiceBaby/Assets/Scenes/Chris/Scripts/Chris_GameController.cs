@@ -23,8 +23,11 @@ public class Chris_GameController : MonoBehaviour
     public Text whosPick;
     public Text diceInfo;
 
-    int turnCount = 0;
-    int maxTurns = 0;
+    int turnCount = 1;
+    int maxTurns = 3;
+
+    //temp variabls for testing
+    public GameObject nextTurnButtion;
 
     private void Start()
     {
@@ -32,6 +35,13 @@ public class Chris_GameController : MonoBehaviour
         gameController = this;//if we have mulitple scenes make this nondestoryable
         startDraft();
         //have it set up the game and start the dice drafting phase
+    }
+
+    private void Update()
+    {
+
+        if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);
+
     }
 
     //Drafting functions
@@ -84,7 +94,25 @@ public class Chris_GameController : MonoBehaviour
             }
             
         }
-        //maybe put dice out on a table and when hovered over shows infromation on them
+        
+    }
+
+    public void nextTurn()
+    {
+        turnCount++;
+        if (turnCount == maxTurns + 1) endGame();
+        else
+        {
+            Player1.resetInventory();
+            Player2.resetInventory();
+        }
+    }
+     public void endGame()
+    {
+        //end the game
+        if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
+        else if (Player1.getScore() < Player2.getScore()) Debug.Log("Player Two wins!");
+        else Debug.Log("Tie~~!");
     }
 
     public void deselectDice()
@@ -99,6 +127,11 @@ public class Chris_GameController : MonoBehaviour
     public void updateDiceInfo()
     {
         diceInfo.text = currentSelected.ToString();
+    }
+
+    public int getTurn()
+    {
+        return turnCount;
     }
 
     //Roll fucntions

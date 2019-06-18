@@ -8,7 +8,13 @@ public class Chris_Player : MonoBehaviour
     public List<Chris_Dice> diceInventory;
     bool rolledDice;
     bool diceFinishedRolling;
+    bool turnFinsihed;
     public Vector3 diceLocation;
+    int playerScore = 0;
+
+    //ManaVariables
+    bool rolledCrit, RolledFail;
+    int red, blue, green, white, black;
 
     private void Update()
     {
@@ -25,17 +31,46 @@ public class Chris_Player : MonoBehaviour
             }
             if (allDiceDown)
             {
+                string rollDebug = "";
                 diceFinishedRolling = true;
+                turnFinsihed = true;
                 foreach (Chris_Dice die in diceInventory)
                 {
-                    Debug.Log(die.getSideOnGround().ToString());
+                    rollDebug += die.getSideOnGround().ToString() + "\n";
+                    //needs to add up the values of the sides and put them in the mana vars to be used for choosing spells
                 }
-
+                Debug.Log(rollDebug);
             }
             
         }
     }
 
+    void resetManaVariables()
+    {
+        rolledCrit = false;
+        RolledFail = false;
+        red = 0;
+        blue = 0;
+        green = 0;
+        black = 0;
+        white = 0;
+    }
+
+    public bool getTurnFinished()
+    {
+        return turnFinsihed;
+    }
+
+    public void addScore(int i)
+    {
+        playerScore += i;
+    }
+
+    public int getScore()
+    {
+        return playerScore;
+    }
+    
     public void rollInventory()
     {
         rolledDice = true;
@@ -49,6 +84,8 @@ public class Chris_Player : MonoBehaviour
     {
         rolledDice = false;
         diceFinishedRolling = false;
+        turnFinsihed = false;
+        resetManaVariables();
         foreach (Chris_Dice die in diceInventory)
         {
             die.resetDie();
