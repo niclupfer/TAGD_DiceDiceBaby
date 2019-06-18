@@ -9,6 +9,6 @@ public class James_DiceFace : ScriptableObject
     public Sprite artwork;
 
     //FIXME: Pretty sure there's a better way to store the mana types, for now they are in the James_ManaEnum file
-    public James_ManaEnum.manaType faceMana;
+    public James_Enum.manaType faceMana;
     public int manaAmount;
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8546705118162522653}
   - component: {fileID: 8546705118162522654}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Die1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2766a3feb1e31b40869c2223787102d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rarity: 0
   numOfFaces: 6
   upwardsFace:
     diceFace: {fileID: 0}

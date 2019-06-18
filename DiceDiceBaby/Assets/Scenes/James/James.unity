@@ -215,6 +215,7 @@ GameObject:
   - component: {fileID: 384823975}
   - component: {fileID: 384823974}
   - component: {fileID: 384823973}
+  - component: {fileID: 384823977}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -295,6 +296,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &384823977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384823972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c56596e896ac5f42aeb3a3709d9a3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: derp
+  score: 0
+  manaPool: 
+  diceDraft: []
 --- !u!1 &1496737690
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +413,7 @@ PrefabInstance:
     - target: {fileID: 8546705118162522655, guid: 85d733a6baf043144bb99e86f952e15f,
         type: 3}
       propertyPath: m_Name
-      value: Cube
+      value: Die1
       objectReference: {fileID: 0}
     - target: {fileID: 8546705118162522641, guid: 85d733a6baf043144bb99e86f952e15f,
         type: 3}
@@ -452,6 +469,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546705118162522654, guid: 85d733a6baf043144bb99e86f952e15f,
+        type: 3}
+      propertyPath: rarity
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d733a6baf043144bb99e86f952e15f, type: 3}

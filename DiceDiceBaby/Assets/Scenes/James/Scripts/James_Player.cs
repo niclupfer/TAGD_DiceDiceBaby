@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class James_Player
+public class James_Player : MonoBehaviour
 {
+    //leaving as a monobehaviour for now
     public string name;
-
     public int score;
-    public Vector3 mana; // red, green, blue
-    public James_DiceBody[] diceDraft;
+
+    public int[] manaPool; // red, green, blue, etc
+    public List<James_DiceBody> diceDraft;
+
+    
 }

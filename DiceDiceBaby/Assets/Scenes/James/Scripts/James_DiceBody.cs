@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class James_DiceBody : MonoBehaviour
 {
+    public James_Enum.diceRarity rarity;
     public int numOfFaces = 6;
     public Side upwardsFace;
     public Side[] faceList;
