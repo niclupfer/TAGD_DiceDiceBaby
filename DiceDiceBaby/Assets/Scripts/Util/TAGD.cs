@@ -13,4 +13,21 @@ public static class TAGD
     {
         return array[Random.Range(0, array.Length)];
     }
+
+    public static T ChooseRandom_Weighted<T>(T[] array, int[] weights)
+    {
+        List<T> weightedList = new List<T>();
+
+        for (var i = 0; i < array.Length; i++)
+        {
+            for (var k = 0; k < weights[i]; k++)
+            {
+                weightedList.Add(array[i]);
+            }
+        }
+
+        var weightedArr = weightedList.ToArray();
+
+        return weightedArr[Random.Range(0, weightedArr.Length)];
+    }
 }

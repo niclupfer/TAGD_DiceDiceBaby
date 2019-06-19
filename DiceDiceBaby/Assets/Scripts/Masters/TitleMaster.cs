@@ -5,29 +5,44 @@ using UnityEngine.SceneManagement;
 
 public class TitleMaster : MonoBehaviour
 {
-    public string mainGameSceneName;
-    public string lobbySceneName;
-    public string diceGenSceneName;
-    public string diceRollingSceneName;
+    public string nic_diceTestScene;
+    public string nic_lobbySceneName;
 
-    public void PlayGame()
+    public string chris_draftScene;
+    public string chris_diceScene;
+    
+    public string james_diceScene;
+
+    public void Nic_DiceTest()
     {
-        SceneManager.LoadScene(mainGameSceneName, LoadSceneMode.Single);
+        SceneManager.LoadScene(nic_diceTestScene, LoadSceneMode.Single);
     }
 
-    public void Test_Lobby()
+    public void Host()
     {
-        SceneManager.LoadScene(lobbySceneName, LoadSceneMode.Single);
+        GameInfo.netRole = NetRole.hostPlayer;
+        SceneManager.LoadScene(nic_lobbySceneName, LoadSceneMode.Single);
     }
 
-    public void Test_DiceGen()
+    public void Join()
     {
-        SceneManager.LoadScene(diceGenSceneName, LoadSceneMode.Single);
+        GameInfo.netRole = NetRole.player;
+        SceneManager.LoadScene(nic_lobbySceneName, LoadSceneMode.Single);
     }
 
-    public void Test_DiceRoll()
+    public void Chris_Dice()
     {
-        SceneManager.LoadScene(diceRollingSceneName, LoadSceneMode.Single);
+        SceneManager.LoadScene(chris_diceScene, LoadSceneMode.Single);
+    }
+
+    public void Chris_Draft()
+    {
+        SceneManager.LoadScene(chris_draftScene, LoadSceneMode.Single);
+    }
+
+    public void James_Dice()
+    {
+        SceneManager.LoadScene(james_diceScene, LoadSceneMode.Single);
     }
 
     public void Quit()
