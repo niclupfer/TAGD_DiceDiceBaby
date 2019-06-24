@@ -10,10 +10,12 @@ public class James_Spell : ScriptableObject
     public string description;
     public List<cost> costs;
 
-    //FIXME: effect? Some effects are very complex, might need to make a different class for them.
-    //public James_Enum.dmgType dmgType; //the type of damage?
-    public int dmg; //positive for damage, negative for healing.
-    public int delay; //How many turns to wait before effect happens?
+    public James_Enum.damageType dmgType;
+    public int dmg;
+    public int heal;
+
+    public bool applyShield;
+    public int shieldTime;
 }
 
 [System.Serializable]

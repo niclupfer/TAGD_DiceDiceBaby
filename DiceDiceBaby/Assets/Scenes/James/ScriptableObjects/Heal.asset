@@ -9,10 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e26d570cf1c7584084bb4a5cc9b8bbc, type: 3}
-  m_Name: 1Green
+  m_Script: {fileID: 11500000, guid: dd1afbaa3a71c6744b3107faa3abb091, type: 3}
+  m_Name: Heal
   m_EditorClassIdentifier: 
-  name: Green
-  artwork: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-  faceMana: 2
-  manaAmount: 1
+  name: heal2
+  description: 2
+  costs:
+  - manaRequirement: 0
+    price: 2
+  dmgType: 0
+  dmg: 0
+  heal: 2
+  applyShield: 0
+  shieldTime: 0

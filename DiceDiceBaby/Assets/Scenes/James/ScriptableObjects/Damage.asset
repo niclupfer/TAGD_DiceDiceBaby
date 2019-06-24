@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd1afbaa3a71c6744b3107faa3abb091, type: 3}
   m_Name: Damage
   m_EditorClassIdentifier: 
-  name: Damage Spell
-  description: Does Damage
+  name: dmg
+  description: 1
   costs:
-  - manaRequirement: 0
+  - manaRequirement: 1
     price: 2
-  dmg: 2
-  delay: 0
+  dmgType: 0
+  dmg: 3
+  heal: 0
+  applyShield: 0
+  shieldTime: 0
