@@ -10,29 +10,37 @@ public class Chris_Player : MonoBehaviour
     bool rolledDice;
     bool diceFinishedRolling;
     bool turnFinsihed;
-    int playerScore = 0;
+    int healthMax = 15;
+    int health = 0;
 
     //ManaVariables
     bool rolledCrit, RolledFail;
     int []manaValues = new int[5];
     public Chris_ManaPanel manaInfo;
 
+    //combat variables
+    int sheild;
+
+
+
     private void Start()
     {
-        for (int i = 0; i < manaValues.Length; i++)
-        {
-            manaValues[i] = 0;
-        }
+        resetManaVariables();
     }
 
     private void Update()
     {
-        if(rolledDice && !diceFinishedRolling)
+        diceRolling();
+    }
+
+    void diceRolling()
+    {
+        if (rolledDice && !diceFinishedRolling)
         {
             bool allDiceDown = true;
             for (int i = 0; i < diceInventory.Count; i++)
             {
-                if(!diceInventory[i].isSideOnGround() || !diceInventory[i].doneRolling())
+                if (!diceInventory[i].isSideOnGround() || !diceInventory[i].doneRolling())
                 {
                     allDiceDown = false;
                     break;
@@ -48,38 +56,16 @@ public class Chris_Player : MonoBehaviour
                     Chris_Side Current = die.getSideOnGround();
                     rollDebug += Current.ToString() + "\n";
 
-                    switch (Current.Symbol)
+                    if (Current.Symbol <= Face.Black)
                     {
-                        case Face.Red:
-                            manaValues[0] += Current.Value;
-                            break;
-                        case Face.Green:
-                            manaValues[1] += Current.Value;
-                            break;
-                        case Face.Blue:
-                            manaValues[2] += Current.Value;
-                            break;
-                        case Face.Black:
-                            manaValues[3] += Current.Value;
-                            break;
-                        case Face.White:
-                            manaValues[4] += Current.Value;
-                            break;
-                        case Face.Star:
-                            rolledCrit = true;
-                            break;
-                        case Face.Skull:
-                            RolledFail = true;
-                            break;
-                        default:
-                            break;
+                        manaValues[(int)Current.Symbol] += Current.Value;
                     }
-
+                    else if (Current.Symbol == Face.Star) rolledCrit = true;
+                    else RolledFail = true;
                 }
                 Debug.Log(rollDebug);
                 manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);
             }
-            
         }
     }
 
@@ -99,14 +85,27 @@ public class Chris_Player : MonoBehaviour
         return turnFinsihed;
     }
 
-    public void addScore(int i)
+    public void changeHealth(int i, James_Enum.damageType d)
     {
-        playerScore += i;
+        if (d != James_Enum.damageType.direct)
+        {
+            health += i;
+        }
+        else if ((d == James_Enum.damageType.direct) && sheild <= 0)
+            health += i;
+        checkHealthOverload();
     }
+
+    void checkHealthOverload()
+    {
+        if (health > healthMax)
+            health = healthMax;
+    }
+
 
     public int getScore()
     {
-        return playerScore;
+        return health;
     }
     
     public void rollInventory()
@@ -128,9 +127,10 @@ public class Chris_Player : MonoBehaviour
         {
             die.resetDie();
         }
+        if(sheild > 0)sheild--;
     }
 
-    public void clearIncentory()
+    public void clearInventory()
     {
         diceInventory.Clear();
     }

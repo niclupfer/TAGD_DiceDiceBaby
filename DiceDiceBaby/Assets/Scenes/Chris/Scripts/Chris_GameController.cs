@@ -109,7 +109,7 @@ public class Chris_GameController : MonoBehaviour
     }
      public void endGame()
     {
-        //end the game
+        ////change to helth 
         if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
         else if (Player1.getScore() < Player2.getScore()) Debug.Log("Player Two wins!");
         else Debug.Log("Tie~~!");
