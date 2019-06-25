@@ -72,7 +72,7 @@ public class Chris_Side : MonoBehaviour
 
     public override string ToString()
     {
-        return "";// Symbol.ToString() + " " + Value;
+        return info.symbol.ToString() + " " + info.value;
     }
 }
 
