@@ -22,6 +22,7 @@ public class Chris_Player : MonoBehaviour
     //combat variables
     int sheild;
     public James_Spell ChosenSpell;
+    public GameObject SpellList; //currently set to a buttion
 
 
 
@@ -66,8 +67,14 @@ public class Chris_Player : MonoBehaviour
                 }
                 Debug.Log(rollDebug);
                 manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);
+                showSpellList();
             }
         }
+    }
+
+    void showSpellList()
+    {
+        SpellList.SetActive(true);
     }
 
     void resetManaVariables()
