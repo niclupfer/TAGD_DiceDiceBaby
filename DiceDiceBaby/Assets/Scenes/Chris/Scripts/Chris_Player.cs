@@ -6,15 +6,24 @@ public class Chris_Player : MonoBehaviour
 {
 
     public List<Chris_Dice> diceInventory;
+    public Vector3 diceLocation;
     bool rolledDice;
     bool diceFinishedRolling;
     bool turnFinsihed;
-    public Vector3 diceLocation;
     int playerScore = 0;
 
     //ManaVariables
     bool rolledCrit, RolledFail;
-    int red, blue, green, white, black;
+    int []manaValues = new int[5];
+    public Chris_ManaPanel manaInfo;
+
+    private void Start()
+    {
+        for (int i = 0; i < manaValues.Length; i++)
+        {
+            manaValues[i] = 0;
+        }
+    }
 
     private void Update()
     {
@@ -36,10 +45,39 @@ public class Chris_Player : MonoBehaviour
                 turnFinsihed = true;
                 foreach (Chris_Dice die in diceInventory)
                 {
-                    rollDebug += die.getSideOnGround().ToString() + "\n";
-                    //needs to add up the values of the sides and put them in the mana vars to be used for choosing spells
+                    Chris_Side Current = die.getSideOnGround();
+                    rollDebug += Current.ToString() + "\n";
+
+                    switch (Current.Symbol)
+                    {
+                        case Face.Red:
+                            manaValues[0] += Current.Value;
+                            break;
+                        case Face.Green:
+                            manaValues[1] += Current.Value;
+                            break;
+                        case Face.Blue:
+                            manaValues[2] += Current.Value;
+                            break;
+                        case Face.Black:
+                            manaValues[3] += Current.Value;
+                            break;
+                        case Face.White:
+                            manaValues[4] += Current.Value;
+                            break;
+                        case Face.Star:
+                            rolledCrit = true;
+                            break;
+                        case Face.Skull:
+                            RolledFail = true;
+                            break;
+                        default:
+                            break;
+                    }
+
                 }
                 Debug.Log(rollDebug);
+                manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);
             }
             
         }
@@ -49,11 +87,11 @@ public class Chris_Player : MonoBehaviour
     {
         rolledCrit = false;
         RolledFail = false;
-        red = 0;
-        blue = 0;
-        green = 0;
-        black = 0;
-        white = 0;
+        for (int i = 0; i < manaValues.Length; i++)
+        {
+            manaValues[i] = 0;
+        }
+        manaInfo.resetManaInfo();
     }
 
     public bool getTurnFinished()

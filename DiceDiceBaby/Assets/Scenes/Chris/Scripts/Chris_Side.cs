@@ -42,5 +42,5 @@ public class Chris_Side : MonoBehaviour
 //enum for what symbols could be on the sides of the dice
 public enum Face
 {
-    Red, Green, Blue, Star, Skull
+    Red, Green, Blue, Black, White, Star, Skull
 }
