@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu, System.Serializable]
 public class James_DiceFace : ScriptableObject
 {
     public new string name;

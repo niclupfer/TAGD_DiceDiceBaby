@@ -837,6 +837,8 @@ MonoBehaviour:
   - {fileID: 899102605}
   diceLocation: {x: 0, y: 0, z: 0}
   manaInfo: {fileID: 4394577359564618486}
+  ChosenSpell: {fileID: 0}
+  SpellList: {fileID: 0}
 --- !u!4 &1135224540
 Transform:
   m_ObjectHideFlags: 0
@@ -1137,7 +1139,7 @@ PrefabInstance:
     - target: {fileID: 2498761041971791529, guid: a88e14ce22a34aa4db72c24f8a74c643,
         type: 3}
       propertyPath: Symbol
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2498761041971791529, guid: a88e14ce22a34aa4db72c24f8a74c643,
         type: 3}
@@ -1147,7 +1149,7 @@ PrefabInstance:
     - target: {fileID: 4677113262568800637, guid: a88e14ce22a34aa4db72c24f8a74c643,
         type: 3}
       propertyPath: Symbol
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4677113262568800637, guid: a88e14ce22a34aa4db72c24f8a74c643,
         type: 3}

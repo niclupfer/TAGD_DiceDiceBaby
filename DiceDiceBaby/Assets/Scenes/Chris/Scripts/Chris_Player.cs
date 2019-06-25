@@ -58,11 +58,11 @@ public class Chris_Player : MonoBehaviour
                     Chris_Side Current = die.getSideOnGround();
                     rollDebug += Current.ToString() + "\n";
 
-                    if (Current.Symbol <= Face.Black)
+                    if (Current.info.symbol <= Face.Black)
                     {
-                        manaValues[(int)Current.Symbol] += Current.Value;
+                        manaValues[(int)Current.info.symbol] += Current.info.value;
                     }
-                    else if (Current.Symbol == Face.Star) rolledCrit = true;
+                    else if (Current.info.symbol == Face.Star) rolledCrit = true;
                     else RolledFail = true;
                 }
                 Debug.Log(rollDebug);
@@ -74,7 +74,8 @@ public class Chris_Player : MonoBehaviour
 
     void showSpellList()
     {
-        SpellList.SetActive(true);
+        //sort spell player can choose from
+        SpellList.SetActive(true);//display for them to pick
     }
 
     void resetManaVariables()

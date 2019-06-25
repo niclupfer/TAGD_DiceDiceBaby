@@ -8,6 +8,7 @@ public class Chris_Dice : MonoBehaviour
 {
     //rolling variables
     public Chris_Side[] Sides;
+    public ScriptableDice diceInfo;
     public Vector3 startPos;
     Rigidbody body;
     bool hasLanded;
@@ -24,6 +25,14 @@ public class Chris_Dice : MonoBehaviour
         hasLanded = false;
         hasRolled = false;
         body.useGravity = false;
+
+        //put info into sides
+        for (int i = 0; i < Sides.Length; i++)
+        {
+            Sides[i].info = diceInfo.Sides[i];
+            Sides[i].updateSprite();
+        }
+
     }
 
     private void Update()
