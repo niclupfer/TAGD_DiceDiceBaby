@@ -29,6 +29,7 @@ public class Chris_GameController : MonoBehaviour
     //temp variabls for testing
     public GameObject nextTurnButtion;
 
+
     private void Start()
     {
         Random.InitState((int)System.DateTime.Now.Ticks);

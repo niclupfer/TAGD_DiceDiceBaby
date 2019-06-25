@@ -16,11 +16,11 @@ public class Chris_ManaPanel : MonoBehaviour
 
     public void updateManaInfo(int[] manaVals, bool crit, bool miss)
     {
-        redVal.text = manaVals[0].ToString();
-        greenVal.text = manaVals[1].ToString();
-        blueVal.text = manaVals[2].ToString();
-        whiteVal.text = manaVals[4].ToString();
-        blackVal.text = manaVals[3].ToString();
+        redVal.text = manaVals[1].ToString();
+        greenVal.text = manaVals[2].ToString();
+        blueVal.text = manaVals[0].ToString();
+        whiteVal.text = manaVals[3].ToString();
+        blackVal.text = manaVals[4].ToString();
         Crit.SetActive(crit);
         Miss.SetActive(miss);
         this.gameObject.SetActive(true);

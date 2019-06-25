@@ -17,9 +17,11 @@ public class Chris_Player : MonoBehaviour
     bool rolledCrit, RolledFail;
     int []manaValues = new int[5];
     public Chris_ManaPanel manaInfo;
+    
 
     //combat variables
     int sheild;
+    public James_Spell ChosenSpell;
 
 
 
@@ -50,7 +52,6 @@ public class Chris_Player : MonoBehaviour
             {
                 string rollDebug = "";
                 diceFinishedRolling = true;
-                turnFinsihed = true;
                 foreach (Chris_Dice die in diceInventory)
                 {
                     Chris_Side Current = die.getSideOnGround();
@@ -102,7 +103,6 @@ public class Chris_Player : MonoBehaviour
             health = healthMax;
     }
 
-
     public int getScore()
     {
         return health;
@@ -140,6 +140,18 @@ public class Chris_Player : MonoBehaviour
         diceInventory.Add(d);
         d.transform.position = diceLocation - new Vector3(0, 0, 2 * diceInventory.Count - 1); ;
         d.startPos = diceLocation - new Vector3(0,0, 2 * diceInventory.Count - 1);// add an offset so dice are not on top of eachother
+    }
+
+    public void chooseSpell(James_Spell spell)
+    {
+        ChosenSpell = spell;
+        foreach (cost c in spell.costs)
+        {
+            manaValues[(int)(c.manaRequirement)] -= c.price;
+        }
+
+
+        turnFinsihed = true;
     }
 
 }
