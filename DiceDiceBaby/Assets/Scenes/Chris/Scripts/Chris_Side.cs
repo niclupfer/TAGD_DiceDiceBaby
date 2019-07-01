@@ -85,7 +85,6 @@ public enum Face
 [System.Serializable]
 public struct sideInfo
 {
-    public string name;
     public Face symbol;
     public int value;
 }
