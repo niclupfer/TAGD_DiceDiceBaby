@@ -11,9 +11,6 @@ public class James_GameMaster : MonoBehaviour
     public Text[] numbers1; // Blue, Red, Green, Health
     public Text[] numbers2; // Blue, Red, Green, Health
 
-    public James_Spell SpellToFire1;
-    public James_Spell SpellToFire2;
-
     private void Start()
     {
         if(players.Length > 2)
@@ -50,13 +47,13 @@ public class James_GameMaster : MonoBehaviour
 
     public void FireSpell1()
     {
-        players[0].castSpell(SpellToFire1, players[1]);
+        players[0].castSpell(players[0].selectedSpell, players[1]);
         UpdateNumbers();
     }
 
     public void FireSpell2()
     {
-        players[1].castSpell(SpellToFire2, players[0]);
+        players[1].castSpell(players[1].selectedSpell, players[0]);
         UpdateNumbers();
     }
 }

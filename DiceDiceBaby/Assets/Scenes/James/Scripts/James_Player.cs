@@ -12,6 +12,7 @@ public class James_Player : MonoBehaviour
     public int[] manaPool; // blue, red, green, crit, miss, white, black
     public List<James_DiceBody> diceDraft;
     public James_Player opponent;
+    public James_Spell selectedSpell;
 
     public string GetPlayerName()
     {
