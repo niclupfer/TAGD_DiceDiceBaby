@@ -7,11 +7,45 @@ using UnityEngine.UI;
 public class CustomMsgID
 {
     public static short Something = 1000;
+
+    // host battle
+    // join battle
+    // welcome to battle <player info>
+    // ready to battle
+    // battle start
+
+    // -- dice drafting
+    // -- server generates dice to choose from
+    // available dice <[dice]>
+    // its your turn
+    // i choose dice <dice>
+    // -- repeat until all players have N dice
+    // draft complete
+    
+    // do your turn ( roll, choose spell)
+    // - peek at dice
+    // - your dice is being looked at
+    // - return the players dice
+    // i'm casting <spell>
+    // -- once all players have sent in their spells
+    // -- figure our order and effects
+    // -- applies the effects to each to player
+    // receive spell <spell>
+    // update stats <[player info]>
+    // 
+    // -- server checks for win
+    // - gameover <winner info>
+    // - repeat do your turn
+
+    // - cancel match
+    // - player quit
+
     public static short PlayerJoin = 1001;
     public static short BattleBegin = 1002;
     public static short Spell = 1003;
-
 };
+
+
 
 public class SomethingMessage : MessageBase
 {
