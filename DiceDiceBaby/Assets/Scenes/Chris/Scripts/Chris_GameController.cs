@@ -42,7 +42,7 @@ public class Chris_GameController : MonoBehaviour
     {
 
         if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);//testing for next turn buttion
-
+        if (diceInfo.text == "" && currentSelected != null) updateDiceInfo();
     }
 
     //Drafting functions
@@ -108,7 +108,7 @@ public class Chris_GameController : MonoBehaviour
             Player2.resetInventory();
         }
     }
-     public void endGame()
+    public void endGame()
     {
         ////change to helth 
         if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
