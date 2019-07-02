@@ -38,10 +38,10 @@ public class Chris_Player : MonoBehaviour
 
     void diceRolling()
     {
-        if (rolledDice && !diceFinishedRolling)
+        if (rolledDice && !diceFinishedRolling)//if dice are rolling
         {
             bool allDiceDown = true;
-            for (int i = 0; i < diceInventory.Count; i++)
+            for (int i = 0; i < diceInventory.Count; i++)//look to see if al dice are down and done rolling
             {
                 if (!diceInventory[i].isSideOnGround() || !diceInventory[i].doneRolling())
                 {
@@ -49,11 +49,11 @@ public class Chris_Player : MonoBehaviour
                     break;
                 }
             }
-            if (allDiceDown)
+            if (allDiceDown)//if done
             {
                 string rollDebug = "";
                 diceFinishedRolling = true;
-                foreach (Chris_Dice die in diceInventory)
+                foreach (Chris_Dice die in diceInventory)//fill mana in data
                 {
                     Chris_Side Current = die.getSideOnGround();
                     rollDebug += Current.ToString() + "\n";
@@ -66,8 +66,8 @@ public class Chris_Player : MonoBehaviour
                     else RolledFail = true;
                 }
                 Debug.Log(rollDebug);
-                manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);
-                showSpellList();
+                manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);//update ui
+                showSpellList();//show the spell list for picking
             }
         }
     }
@@ -152,8 +152,8 @@ public class Chris_Player : MonoBehaviour
 
     public void chooseSpell(James_Spell spell)
     {
-        ChosenSpell = spell;
-        foreach (cost c in spell.costs)
+        ChosenSpell = spell;//select as chosen spell
+        foreach (cost c in spell.costs)//take mana away
         {
             manaValues[(int)(c.manaRequirement)] -= c.price;
         }

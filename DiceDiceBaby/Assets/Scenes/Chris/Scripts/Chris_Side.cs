@@ -20,18 +20,18 @@ public class Chris_Side : MonoBehaviour
     private void Start()
     {
         onGround = false;
-    }
+    }//initalize
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Floor")) onGround = true;
-    }
+    }//for checking which side is down
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Floor")) onGround = false;
     }
 
-    public void updateSprite()
+    public void updateSprite()//set the sprite accoring to values
     {
         //set sprite according to face
         switch(info.symbol)
@@ -63,12 +63,12 @@ public class Chris_Side : MonoBehaviour
     public bool faceDown()
     {
         return onGround;
-    }
+    }//returns if the face is down
 
     public Chris_Side getSide()
     {
         return this;
-    }
+    }//get the side
 
     public override string ToString()
     {
@@ -77,13 +77,13 @@ public class Chris_Side : MonoBehaviour
 }
 
 //enum for what symbols could be on the sides of the dice
-public enum Face
+public enum Face 
 {
     Blue, Red, Green, White, Black, Star, Skull
 }
 
 [System.Serializable]
-public struct sideInfo
+public struct sideInfo//side info for makeing scriptable dice
 {
     public Face symbol;
     public int value;

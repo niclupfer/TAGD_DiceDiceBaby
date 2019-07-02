@@ -41,7 +41,7 @@ public class Chris_GameController : MonoBehaviour
     private void Update()
     {
 
-        if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);
+        if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);//testing for next turn buttion
 
     }
 
@@ -64,18 +64,18 @@ public class Chris_GameController : MonoBehaviour
         }
     }
 
-    public void pickDie()
+    public void pickDie()//picking die during drafting
     {
         if (currentSelected != null && pickPhase)
         {
-            if (playerOnesTurn)
+            if (playerOnesTurn)//player ones pick
             {
                 Player1.addDice(currentSelected);
                 currentSelected = null;
                 whosPick.text = "Player Two Choosing";
                 diceInfo.text = "";
             }
-            else
+            else//palyer twos pick
             {
                 Player2.addDice(currentSelected);
                 currentSelected = null;
@@ -84,7 +84,7 @@ public class Chris_GameController : MonoBehaviour
             }
             dicePicked++;
             playerOnesTurn = !playerOnesTurn;
-            if (dicePicked == 6)
+            if (dicePicked == 6)//drafting over
             {
                 pickPhase = false;
                 whosPick.text = "Pick Phase Over";
@@ -98,11 +98,11 @@ public class Chris_GameController : MonoBehaviour
         
     }
 
-    public void nextTurn()
+    public void nextTurn()//reset everything for next turn
     {
         turnCount++;
-        if (turnCount == maxTurns + 1) endGame();
-        else
+        if (turnCount == maxTurns + 1) endGame();//end game if turn count maxed
+        else//reset
         {
             Player1.resetInventory();
             Player2.resetInventory();
@@ -116,7 +116,7 @@ public class Chris_GameController : MonoBehaviour
         else Debug.Log("Tie~~!");
     }
 
-    public void deselectDice()
+    public void deselectDice()//deselects the current die
     {
         foreach (Chris_Dice dice in dicePool)
         {
@@ -128,7 +128,7 @@ public class Chris_GameController : MonoBehaviour
     public void updateDiceInfo()
     {
         diceInfo.text = currentSelected.ToString();
-    }
+    }//updates dice panel info
 
     public int getTurn()
     {
