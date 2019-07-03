@@ -14,9 +14,11 @@ public class Chris_Dice : MonoBehaviour
     bool hasLanded;
     bool hasRolled;
 
+
+
     //drafting variables
     bool isSelected = false;
-
+    int turnSpeed = 15;
 
     private void Start()
     {
@@ -53,6 +55,8 @@ public class Chris_Dice : MonoBehaviour
             }        
         }
         else if(hasRolled && !body.IsSleeping())body.useGravity = true;//else if floating in space just land
+
+        if (Chris_GameController.pickPhase) transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed);
     }
 
     public void resetDie()//go abck to roll posistion

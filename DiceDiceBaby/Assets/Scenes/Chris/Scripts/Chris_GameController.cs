@@ -44,6 +44,7 @@ public class Chris_GameController : MonoBehaviour
 
     private void Update()
     {
+        //if (dicePool[currentDie] != null) dicePool[currentDie].transform.rotation += new Quaternion(1, 0, 0, 0);
         if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);//testing for next turn buttion
     }
 
