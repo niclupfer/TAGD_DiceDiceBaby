@@ -9,8 +9,8 @@ public class Chris_GameController : MonoBehaviour
 
     public static Chris_GameController gameController;
     public Transform diceShowLocation;
-    public Transform diceShowLocationRight;
     public Transform diceShowLocationLeft;
+    public Transform diceShowLocationRight;
 
    
     public Chris_Player Player1;
