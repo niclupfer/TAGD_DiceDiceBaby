@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2594ad5f28dd2b44cb735fcb909c42fe, type: 3}
-  m_Name: RGBUCF
+  m_Name: Common1
   m_EditorClassIdentifier: 
+  id: Common1
   Sides:
   - symbol: 1
     value: 1

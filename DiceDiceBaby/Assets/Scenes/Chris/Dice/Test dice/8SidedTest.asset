@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2594ad5f28dd2b44cb735fcb909c42fe, type: 3}
   m_Name: 8SidedTest
   m_EditorClassIdentifier: 
+  id: 8 side test
   Sides:
   - symbol: 0
     value: 1

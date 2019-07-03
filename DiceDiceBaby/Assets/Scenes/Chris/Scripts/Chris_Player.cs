@@ -153,7 +153,7 @@ public class Chris_Player : MonoBehaviour
     public void chooseSpell(James_Spell spell)
     {
         ChosenSpell = spell;//select as chosen spell
-        foreach (cost c in spell.costs)//take mana away
+        foreach (cost c in spell.costs)//take mana away 
         {
             manaValues[(int)(c.manaRequirement)] -= c.price;
         }

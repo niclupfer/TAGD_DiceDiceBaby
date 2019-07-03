@@ -32,7 +32,7 @@ public class Chris_Dice : MonoBehaviour
             Sides[i].info = diceInfo.Sides[i];
             Sides[i].updateSprite();
         }
-
+        if (Chris_GameController.pickPhase && Chris_GameController.gameController != null) Chris_GameController.gameController.updateDiceInfo();
     }
 
     private void Update()
@@ -101,25 +101,20 @@ public class Chris_Dice : MonoBehaviour
     }
 
     /***********************************************Drafting functions Start*********************************/
-    private void OnMouseDown()
+    public void select()
     {
         //open a dice info screen, show a select buttion
         if(!isSelected && !hasRolled && Chris_GameController.pickPhase)
         {
-            //deselect all other dice
-            Chris_GameController.gameController.deselectDice();
             isSelected = true;
-            //show dice infomation
-            Chris_GameController.gameController.currentSelected = this;
-            Chris_GameController.gameController.updateDiceInfo();
-            //allow select
-            
+            transform.position = Chris_GameController.gameController.diceShowLocation.position;
         }
     }
 
     public void deSelect()
     {
         isSelected = false;
+        transform.position = startPos;
     }
 
     public override string ToString()
@@ -130,6 +125,11 @@ public class Chris_Dice : MonoBehaviour
             info += side.ToString() + "\n";
         }
         return info;
+    }
+
+    public Chris_Side[] Get_Sides()
+    {
+        return Sides;
     }
 
 }

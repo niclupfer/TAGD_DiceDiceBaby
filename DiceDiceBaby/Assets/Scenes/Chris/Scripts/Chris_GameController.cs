@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Chris_GameController : MonoBehaviour
 {
 
     public static Chris_GameController gameController;
+    public Transform diceShowLocation;
+
    
     public Chris_Player Player1;
     public Chris_Player Player2;
@@ -18,10 +21,11 @@ public class Chris_GameController : MonoBehaviour
     public static bool pickPhase = true;
     bool playerOnesTurn;
     int dicePicked = 0;
-    public Chris_Dice []dicePool;
-    public Chris_Dice currentSelected;
+    public List<Chris_Dice> dicePool;
+    public DiceInfoPanel[] infoPanels;
+    public TextMeshProUGUI diceName;
+    public int currentDie;
     public Text whosPick;
-    public Text diceInfo;
 
     int turnCount = 1;
     int maxTurns = 3;
@@ -40,9 +44,7 @@ public class Chris_GameController : MonoBehaviour
 
     private void Update()
     {
-
         if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);//testing for next turn buttion
-        if (diceInfo.text == "" && currentSelected != null) updateDiceInfo();
     }
 
     //Drafting functions
@@ -62,25 +64,28 @@ public class Chris_GameController : MonoBehaviour
             playerOnesTurn = false;
             whosPick.text = "Player Two Choosing";
         }
+
+        currentDie = 0;
+        dicePool[currentDie].select();
+        updateDiceInfo();
+        
     }
 
     public void pickDie()//picking die during drafting
     {
-        if (currentSelected != null && pickPhase)
+        if (dicePool[currentDie] != null && pickPhase)
         {
             if (playerOnesTurn)//player ones pick
             {
-                Player1.addDice(currentSelected);
-                currentSelected = null;
+                Player1.addDice(dicePool[currentDie]);
+                dicePool.RemoveAt(currentDie);
                 whosPick.text = "Player Two Choosing";
-                diceInfo.text = "";
             }
             else//palyer twos pick
             {
-                Player2.addDice(currentSelected);
-                currentSelected = null;
+                Player2.addDice(dicePool[currentDie]);
+                dicePool.RemoveAt(currentDie);
                 whosPick.text = "Player One Choosing";
-                diceInfo.text = "";
             }
             dicePicked++;
             playerOnesTurn = !playerOnesTurn;
@@ -88,14 +93,71 @@ public class Chris_GameController : MonoBehaviour
             {
                 pickPhase = false;
                 whosPick.text = "Pick Phase Over";
-                diceInfo.text = "";
                 Player1Cam.SetActive(true);
                 Player2Cam.SetActive(true);
                 
             }
-            
+            else
+            {
+                currentDie = 0;
+                dicePool[currentDie].select();
+                updateDiceInfo();
+            }
         }
         
+    }
+
+    public void shiftRight()
+    {
+        dicePool[currentDie].deSelect();
+        if (currentDie == dicePool.Count - 1)
+        {
+            currentDie = 0;
+        }
+        else
+        {
+            currentDie++;
+        }
+        dicePool[currentDie].select();
+        updateDiceInfo();
+    }
+
+    public void shiftLeft()
+    {
+        dicePool[currentDie].deSelect();
+        if (currentDie == 0)
+        {
+            currentDie = dicePool.Count - 1;
+        }
+        else
+        {
+            currentDie--;
+        }
+        dicePool[currentDie].select();
+        updateDiceInfo();
+    }
+
+    public void updateDiceInfo()
+    {
+        foreach (DiceInfoPanel panel in infoPanels)
+        {
+            panel.disable();
+        }
+        Chris_Side[] sides = dicePool[currentDie].Get_Sides();
+        for (int i = 0; i < sides.Length; i++)
+        {
+            infoPanels[i].info = sides[i];
+            infoPanels[i].updateInfo();
+        }
+        diceName.text = dicePool[currentDie].diceInfo.id;
+
+    }//updates dice panel info
+
+    //game fucntions
+
+    public int getTurn()
+    {
+        return turnCount;
     }
 
     public void nextTurn()//reset everything for next turn
@@ -108,31 +170,13 @@ public class Chris_GameController : MonoBehaviour
             Player2.resetInventory();
         }
     }
+
     public void endGame()
     {
         ////change to helth 
         if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
         else if (Player1.getScore() < Player2.getScore()) Debug.Log("Player Two wins!");
         else Debug.Log("Tie~~!");
-    }
-
-    public void deselectDice()//deselects the current die
-    {
-        foreach (Chris_Dice dice in dicePool)
-        {
-            dice.deSelect();
-        }
-        currentSelected = null;
-    }
-
-    public void updateDiceInfo()
-    {
-        diceInfo.text = currentSelected.ToString();
-    }//updates dice panel info
-
-    public int getTurn()
-    {
-        return turnCount;
     }
 
     //Roll fucntions
