@@ -9,6 +9,8 @@ public class Chris_GameController : MonoBehaviour
 
     public static Chris_GameController gameController;
     public Transform diceShowLocation;
+    public Transform diceShowLocationRight;
+    public Transform diceShowLocationLeft;
 
    
     public Chris_Player Player1;
@@ -68,6 +70,8 @@ public class Chris_GameController : MonoBehaviour
 
         currentDie = 0;
         dicePool[currentDie].select();
+        dicePool[1].transform.position = diceShowLocationRight.position;
+        dicePool[dicePool.Count -1].transform.position = diceShowLocationLeft.position;
         updateDiceInfo();
         
     }
@@ -102,6 +106,8 @@ public class Chris_GameController : MonoBehaviour
             {
                 currentDie = 0;
                 dicePool[currentDie].select();
+                dicePool[1].transform.position = diceShowLocationRight.position;
+                dicePool[dicePool.Count - 1].transform.position = diceShowLocationLeft.position;
                 updateDiceInfo();
             }
         }
@@ -110,7 +116,11 @@ public class Chris_GameController : MonoBehaviour
 
     public void shiftRight()
     {
-        dicePool[currentDie].deSelect();
+        //dicePool[currentDie].deSelect();
+        foreach (Chris_Dice D in dicePool)
+        {
+            D.deSelect();
+        }
         if (currentDie == dicePool.Count - 1)
         {
             currentDie = 0;
@@ -121,11 +131,32 @@ public class Chris_GameController : MonoBehaviour
         }
         dicePool[currentDie].select();
         updateDiceInfo();
+
+        if(currentDie == dicePool.Count - 1)
+        {
+            dicePool[0].transform.position = diceShowLocationRight.position;
+        }
+        else
+        {
+            dicePool[currentDie + 1].transform.position = diceShowLocationRight.position;
+        }
+        if (currentDie == 0)
+        {
+            dicePool[dicePool.Count - 1].transform.position = diceShowLocationLeft.position;
+        }
+        else
+        {
+            dicePool[currentDie - 1].transform.position = diceShowLocationLeft.position;
+        }
     }
 
     public void shiftLeft()
     {
-        dicePool[currentDie].deSelect();
+        //dicePool[currentDie].deSelect();
+        foreach (Chris_Dice D in dicePool)
+        {
+            D.deSelect();
+        }
         if (currentDie == 0)
         {
             currentDie = dicePool.Count - 1;
@@ -136,6 +167,22 @@ public class Chris_GameController : MonoBehaviour
         }
         dicePool[currentDie].select();
         updateDiceInfo();
+        if (currentDie == dicePool.Count - 1)
+        {
+            dicePool[0].transform.position = diceShowLocationRight.position;
+        }
+        else
+        {
+            dicePool[currentDie + 1].transform.position = diceShowLocationRight.position;
+        }
+        if (currentDie == 0)
+        {
+            dicePool[dicePool.Count - 1].transform.position = diceShowLocationLeft.position;
+        }
+        else
+        {
+            dicePool[currentDie - 1].transform.position = diceShowLocationLeft.position;
+        }
     }
 
     public void updateDiceInfo()
