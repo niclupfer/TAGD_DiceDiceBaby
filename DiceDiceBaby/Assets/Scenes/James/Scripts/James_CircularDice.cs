@@ -6,7 +6,7 @@ public class James_CircularDice : MonoBehaviour
 {
     //placed on central DICE object, controls rotation and placement of dice in a ring.
     public Chris_GameController gameController;
-
+    public float dist = 1f;
     private int dieTot;
 
     private void Start()
@@ -16,7 +16,7 @@ public class James_CircularDice : MonoBehaviour
 
     void PutDiceInRing()
     {
-        float r = Mathf.Sin(0.5f * (360f/(float)dieTot));
+        float r = dist/(Mathf.Sin(0.5f * (360f / (float)dieTot)));
         for (int d = 0; d < dieTot; d++)
         {
             Transform dicePlace = gameController.dicePool[d].transform;
