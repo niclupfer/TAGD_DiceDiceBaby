@@ -105,21 +105,6 @@ public class Chris_Dice : MonoBehaviour
     }
 
     /***********************************************Drafting functions Start*********************************/
-    public void select()
-    {
-        //open a dice info screen, show a select buttion
-        if(!isSelected && !hasRolled && Chris_GameController.pickPhase)
-        {
-            isSelected = true;
-            transform.position = Chris_GameController.gameController.diceShowLocation.position;
-        }
-    }
-
-    public void deSelect()
-    {
-        isSelected = false;
-        transform.position = startPos;
-    }
 
     public override string ToString()
     {

@@ -8,9 +8,7 @@ public class Chris_GameController : MonoBehaviour
 {
 
     public static Chris_GameController gameController;
-    public Transform diceShowLocation;
-    public Transform diceShowLocationLeft;
-    public Transform diceShowLocationRight;
+    public James_CircularDice DiceCircle;
 
    
     public Chris_Player Player1;
@@ -46,7 +44,7 @@ public class Chris_GameController : MonoBehaviour
 
     private void Update()
     {
-        //if (dicePool[currentDie] != null) dicePool[currentDie].transform.rotation += new Quaternion(1, 0, 0, 0);
+        if (dicePool[currentDie] != null) dicePool[currentDie].transform.Rotate(1, 1, 1);
         if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);//testing for next turn buttion
     }
 
@@ -69,11 +67,9 @@ public class Chris_GameController : MonoBehaviour
         }
 
         currentDie = 0;
-        dicePool[currentDie].select();
-        dicePool[1].transform.position = diceShowLocationRight.position;
-        dicePool[dicePool.Count -1].transform.position = diceShowLocationLeft.position;
         updateDiceInfo();
-        
+        DiceCircle.resetAngle();
+        DiceCircle.PutDiceInRing();
     }
 
     public void pickDie()//picking die during drafting
@@ -104,10 +100,9 @@ public class Chris_GameController : MonoBehaviour
             }
             else
             {
+                DiceCircle.resetAngle();
+                DiceCircle.PutDiceInRing();
                 currentDie = 0;
-                dicePool[currentDie].select();
-                dicePool[1].transform.position = diceShowLocationRight.position;
-                dicePool[dicePool.Count - 1].transform.position = diceShowLocationLeft.position;
                 updateDiceInfo();
             }
         }
@@ -116,11 +111,6 @@ public class Chris_GameController : MonoBehaviour
 
     public void shiftRight()
     {
-        //dicePool[currentDie].deSelect();
-        foreach (Chris_Dice D in dicePool)
-        {
-            D.deSelect();
-        }
         if (currentDie == dicePool.Count - 1)
         {
             currentDie = 0;
@@ -129,34 +119,12 @@ public class Chris_GameController : MonoBehaviour
         {
             currentDie++;
         }
-        dicePool[currentDie].select();
         updateDiceInfo();
-
-        if(currentDie == dicePool.Count - 1)
-        {
-            dicePool[0].transform.position = diceShowLocationRight.position;
-        }
-        else
-        {
-            dicePool[currentDie + 1].transform.position = diceShowLocationRight.position;
-        }
-        if (currentDie == 0)
-        {
-            dicePool[dicePool.Count - 1].transform.position = diceShowLocationLeft.position;
-        }
-        else
-        {
-            dicePool[currentDie - 1].transform.position = diceShowLocationLeft.position;
-        }
+        DiceCircle.rotateRight();
     }
 
     public void shiftLeft()
     {
-        //dicePool[currentDie].deSelect();
-        foreach (Chris_Dice D in dicePool)
-        {
-            D.deSelect();
-        }
         if (currentDie == 0)
         {
             currentDie = dicePool.Count - 1;
@@ -165,24 +133,8 @@ public class Chris_GameController : MonoBehaviour
         {
             currentDie--;
         }
-        dicePool[currentDie].select();
         updateDiceInfo();
-        if (currentDie == dicePool.Count - 1)
-        {
-            dicePool[0].transform.position = diceShowLocationRight.position;
-        }
-        else
-        {
-            dicePool[currentDie + 1].transform.position = diceShowLocationRight.position;
-        }
-        if (currentDie == 0)
-        {
-            dicePool[dicePool.Count - 1].transform.position = diceShowLocationLeft.position;
-        }
-        else
-        {
-            dicePool[currentDie - 1].transform.position = diceShowLocationLeft.position;
-        }
+        DiceCircle.rotateLeft();
     }
 
     public void updateDiceInfo()

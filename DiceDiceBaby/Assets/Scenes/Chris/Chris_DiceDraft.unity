@@ -850,13 +850,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188978893}
-  m_LocalRotation: {x: 0.45546275, y: -0, z: -0, w: 0.8902549}
-  m_LocalPosition: {x: 0, y: 7.45, z: -10.63}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 54.189003, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &196680289 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1545646792653640584, guid: a88e14ce22a34aa4db72c24f8a74c643,
@@ -4850,9 +4850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662148ec672e77b4b8cd43999ae566e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  diceShowLocation: {fileID: 1450431655}
-  diceShowLocationRight: {fileID: 739483379}
-  diceShowLocationLeft: {fileID: 229224116}
+  DiceCircle: {fileID: 1817784348}
   Player1: {fileID: 1143797954}
   Player2: {fileID: 1262640777}
   Player1Cam: {fileID: 891419127}
@@ -7253,6 +7251,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1817784347}
+  - component: {fileID: 1817784348}
   m_Layer: 0
   m_Name: Dice
   m_TagString: Untagged
@@ -7268,7 +7267,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817784346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: -4, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1731602960}
@@ -7282,6 +7281,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1817784348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817784346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd6f5417fa1b0c42b134995df85659c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dist: 4
 --- !u!114 &1868283137 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1545646792653640584, guid: a88e14ce22a34aa4db72c24f8a74c643,
