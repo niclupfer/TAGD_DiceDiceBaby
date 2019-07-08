@@ -56,7 +56,7 @@ public class Chris_Dice : MonoBehaviour
         }
         else if(hasRolled && !body.IsSleeping())body.useGravity = true;//else if floating in space just land
 
-        if (Chris_GameController.pickPhase) transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed);
+        if (Chris_GameController.pickPhase) transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed); //turn off if in roll scene
     }
 
     public void resetDie()//go abck to roll posistion

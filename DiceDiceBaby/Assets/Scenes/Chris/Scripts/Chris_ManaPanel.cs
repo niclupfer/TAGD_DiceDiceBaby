@@ -11,7 +11,7 @@ public class Chris_ManaPanel : MonoBehaviour
     public Text greenVal;
     public Text blackVal;
     public Text whiteVal;
-    public GameObject Crit;
+    public Text critVal;
     public GameObject Miss;
 
     public void updateManaInfo(int[] manaVals, bool crit, bool miss)
@@ -21,15 +21,20 @@ public class Chris_ManaPanel : MonoBehaviour
         blueVal.text = manaVals[0].ToString();
         whiteVal.text = manaVals[3].ToString();
         blackVal.text = manaVals[4].ToString();
-        Crit.SetActive(crit);
+        critVal.text = manaVals[5].ToString();
         Miss.SetActive(miss);
         this.gameObject.SetActive(true);
     }
 
     public void resetManaInfo()
     {
-        Crit.SetActive(false);
         Miss.SetActive(false);
-        this.gameObject.SetActive(false);
+        redVal.text = "0";
+        greenVal.text = "0";
+        blueVal.text = "0";
+        whiteVal.text = "0";
+        blackVal.text = "0";
+        critVal.text = "0";
+        //this.gameObject.SetActive(false);
     }
 }

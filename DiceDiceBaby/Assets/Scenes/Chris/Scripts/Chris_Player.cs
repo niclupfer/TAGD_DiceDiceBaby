@@ -15,7 +15,7 @@ public class Chris_Player : MonoBehaviour
 
     //ManaVariables
     bool rolledCrit, RolledFail;
-    int []manaValues = new int[5];
+    int []manaValues = new int[6];
     public Chris_ManaPanel manaInfo;
     
 
@@ -23,6 +23,7 @@ public class Chris_Player : MonoBehaviour
     int sheild;
     public James_Spell ChosenSpell;
     public GameObject SpellList; //currently set to a buttion
+    public GameObject RollButtion;
 
 
 
@@ -58,15 +59,17 @@ public class Chris_Player : MonoBehaviour
                     Chris_Side Current = die.getSideOnGround();
                     rollDebug += Current.ToString() + "\n";
 
-                    if (Current.info.symbol <= Face.Black)
+                    if (Current.info.symbol <= Face.Star)
                     {
                         manaValues[(int)Current.info.symbol] += Current.info.value;
                     }
-                    else if (Current.info.symbol == Face.Star) rolledCrit = true;
                     else RolledFail = true;
+                    if (Current.info.symbol == Face.Star) rolledCrit = true;
+                    
                 }
                 Debug.Log(rollDebug);
                 manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);//update ui
+                //send mana info to enemy through message
                 showSpellList();//show the spell list for picking
             }
         }
@@ -136,6 +139,7 @@ public class Chris_Player : MonoBehaviour
             die.resetDie();
         }
         if(sheild > 0)sheild--;
+        RollButtion.SetActive(true);
     }
 
     public void clearInventory()

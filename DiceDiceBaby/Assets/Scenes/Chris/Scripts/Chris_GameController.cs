@@ -11,25 +11,28 @@ public class Chris_GameController : MonoBehaviour
     public James_CircularDice DiceCircle;
 
    
-    public Chris_Player Player1;
-    public Chris_Player Player2;
-
-    public GameObject Player1Cam;
-    public GameObject Player2Cam;
+    public Chris_Player Player;
+    public GameObject PlayerCam;
+    public GameObject PlayerUI;
+    bool enemyFinished = false;
+    int turnCount = 1;
+    int maxTurns = 3;
+    public Chris_ManaPanel enemyInfo;
+    
 
     //draft phase vars
     public static bool pickPhase = true;
-    bool playerOnesTurn;
+    bool yourTurn;
     int dicePicked = 0;
     public List<Chris_Dice> dicePool;
+    public GameObject draftCanvas;
+    public GameObject draftCam;
     public DiceInfoPanel[] infoPanels;
     public TextMeshProUGUI diceName;
     public int currentDie;
     public Text whosPick;
 
-    int turnCount = 1;
-    int maxTurns = 3;
-
+    
     //temp variabls for testing
     public GameObject nextTurnButtion;
 
@@ -45,7 +48,8 @@ public class Chris_GameController : MonoBehaviour
     private void Update()
     {
         if (dicePool[currentDie] != null) dicePool[currentDie].transform.Rotate(1, 1, 1);
-        if (nextTurnButtion.active == false && Player1.getTurnFinished() == true && Player2.getTurnFinished() == true && turnCount != maxTurns + 1) nextTurnButtion.SetActive(true);//testing for next turn buttion
+
+        if (Player.getTurnFinished() && enemyFinished) nextTurn(); // we would tell the game to call the calculate functons here to update health for spells chosen
     }
 
     //Drafting functions
@@ -57,15 +61,18 @@ public class Chris_GameController : MonoBehaviour
         Debug.Log(coinFlip);
         if (coinFlip == 0)
         {
-            playerOnesTurn = true;
+            yourTurn = true;
             whosPick.text = "Player One Choosing";
         }
         else
         {
-            playerOnesTurn = false;
+            yourTurn = false;
             whosPick.text = "Player Two Choosing";
         }
 
+        //PopulateDraft() if the player is the host they will need to popualte the draft then somehow send the info the the enemy;
+
+        //if host send signal for whos picking first;
         currentDie = 0;
         updateDiceInfo();
         DiceCircle.resetAngle();
@@ -76,37 +83,59 @@ public class Chris_GameController : MonoBehaviour
     {
         if (dicePool[currentDie] != null && pickPhase)
         {
-            if (playerOnesTurn)//player ones pick
+            if (yourTurn)//player ones pick
             {
-                Player1.addDice(dicePool[currentDie]);
+                //send data to enemy for what dice you chose
+                Player.addDice(dicePool[currentDie]);
                 dicePool.RemoveAt(currentDie);
                 whosPick.text = "Player Two Choosing";
-            }
-            else//palyer twos pick
-            {
-                Player2.addDice(dicePool[currentDie]);
-                dicePool.RemoveAt(currentDie);
-                whosPick.text = "Player One Choosing";
-            }
-            dicePicked++;
-            playerOnesTurn = !playerOnesTurn;
-            if (dicePicked == 6)//drafting over
-            {
-                pickPhase = false;
-                whosPick.text = "Pick Phase Over";
-                Player1Cam.SetActive(true);
-                Player2Cam.SetActive(true);
-                
-            }
-            else
-            {
-                DiceCircle.resetAngle();
-                DiceCircle.PutDiceInRing();
-                currentDie = 0;
-                updateDiceInfo();
+                yourTurn = false;
+                checkDicePhaseState();
             }
         }
         
+    }
+
+    public void enemyPickDie(string diceName)//would be called by the listener fucntion according to what string is recived
+    {
+        if(!yourTurn)
+        {
+            for (int i = 0; i < dicePool.Count; i++)
+            {
+                if (dicePool[i].diceInfo.id.Equals(diceName))
+                {
+                    dicePool[i].transform.position = new Vector3(100, 100, 100);
+                    dicePool.RemoveAt(i);
+                    whosPick.text = "Your Pick";
+                    yourTurn = true;
+                    break;
+                }
+            }
+            checkDicePhaseState();
+        }
+
+    }
+
+    public void checkDicePhaseState()
+    {
+        dicePicked++;
+        if (dicePicked == 6)//drafting over
+        {
+            pickPhase = false;
+            whosPick.text = "Pick Phase Over";
+            PlayerCam.SetActive(true);
+            PlayerUI.SetActive(true);
+            draftCam.SetActive(false);
+            draftCanvas.SetActive(false);
+            //disable draft came and gui and swtch player to their screen
+        }
+        else
+        {
+            DiceCircle.resetAngle();
+            DiceCircle.PutDiceInRing();
+            currentDie = 0;
+            updateDiceInfo();
+        }
     }
 
     public void shiftRight()
@@ -160,23 +189,43 @@ public class Chris_GameController : MonoBehaviour
         return turnCount;
     }
 
+    public void updateDraftInfo(string data)
+    {
+  
+    }
+
+    public void enemyTurnFinish(string data)
+    {
+        //would be for choosen spell info
+        enemyFinished = true;
+    }
+
+    void updateEnemyInfo(string data)
+    {
+
+        //would be for updating what the enemy rolled
+
+    }
+
     public void nextTurn()//reset everything for next turn
     {
         turnCount++;
         if (turnCount == maxTurns + 1) endGame();//end game if turn count maxed
         else//reset
         {
-            Player1.resetInventory();
-            Player2.resetInventory();
+            Player.resetInventory();
+            enemyFinished = false;
         }
     }
 
     public void endGame()
     {
+        enemyFinished = false;//temp
         ////change to helth 
-        if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
-        else if (Player1.getScore() < Player2.getScore()) Debug.Log("Player Two wins!");
-        else Debug.Log("Tie~~!");
+        //if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
+        //else if (Player1.getScore() < Player2.getScore()) Debug.Log("Player Two wins!");
+        //else Debug.Log("Tie~~!");
+        Debug.Log("GameOver");
     }
 
     //Roll fucntions
