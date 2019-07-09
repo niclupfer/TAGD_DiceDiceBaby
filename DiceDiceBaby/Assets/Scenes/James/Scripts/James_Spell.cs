@@ -21,6 +21,6 @@ public class James_Spell : ScriptableObject
 [System.Serializable]
 public struct cost
 {
-    public James_Enum.manaType manaRequirement;
+    public Face manaRequirement; // b, r, g, white, black, star, skull
     public int price;
 }

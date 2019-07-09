@@ -557,7 +557,7 @@ MonoBehaviour:
   m_BroadcastInterval: 1000
   m_UseNetworkManager: 0
   m_BroadcastData: TAGD Dice Game
-  m_ShowGUI: 0
+  m_ShowGUI: 1
   m_OffsetX: 0
   m_OffsetY: 0
 --- !u!1 &1633216885
