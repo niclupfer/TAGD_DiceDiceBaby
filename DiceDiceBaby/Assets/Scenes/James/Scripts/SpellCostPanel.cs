@@ -5,11 +5,7 @@ using UnityEngine.UI;
 
 public class SpellCostPanel : MonoBehaviour
 {
-    public Sprite manaSprite;
-    public Text disp;
+    public List<SpellManaPanel> spellMPanels;
 
-    public void UpdatePanel()
-    {
 
-    }
 }
