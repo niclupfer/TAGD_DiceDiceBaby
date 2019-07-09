@@ -8,6 +8,14 @@ public class SpellCostPanel : MonoBehaviour
     public Chris_Player player;
     public List<SpellManaPanel> spellMPanels;
 
+    private void Start()
+    {
+        foreach (SpellManaPanel smp in spellMPanels)
+        {
+            smp.disable();
+        }
+    }
+
     public void UpdateSpellPanels()
     {
         foreach(SpellManaPanel smp in spellMPanels)
