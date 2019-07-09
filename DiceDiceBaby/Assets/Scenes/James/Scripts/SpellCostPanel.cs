@@ -9,8 +9,9 @@ public class SpellCostPanel : MonoBehaviour
     public TextMeshProUGUI SpellName;
     public TextMeshProUGUI SpellDesc;
     public List<SpellManaPanel> spellMPanels;
-
     public James_Spell currentSpell;
+
+    public List<James_Spell> spells;//maybe we refreance all the spells here and enable them according to mana given
 
     private void Start()
     {
@@ -35,4 +36,11 @@ public class SpellCostPanel : MonoBehaviour
             spellMPanels[i].updateCost(s.spell.costs[i]);
         }
     }
+
+    public void castSpell()
+    {
+        Chris_Player.player.chooseSpell(currentSpell);
+    }
+
+    
 }

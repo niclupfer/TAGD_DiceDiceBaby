@@ -7,13 +7,24 @@ public class James_SpellSelector : MonoBehaviour
 {
     public Text name;
     public James_Spell spell;
-    James_Player player;
+
 
     private void Start()
     {
         name.text = spell.name;
     }
 
+    public void enable()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void disable()
+    {
+        gameObject.SetActive(false);
+    }
+
+    /*
     public void SetSpell()
     {
         //player = FindPlayer(transform).GetComponent<James_Player>();
@@ -36,4 +47,5 @@ public class James_SpellSelector : MonoBehaviour
         }
         return p;
     }
+    */
 }

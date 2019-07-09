@@ -5,6 +5,8 @@ using UnityEngine;
 public class Chris_Player : MonoBehaviour
 {
 
+    public static Chris_Player player;
+
     public List<Chris_Dice> diceInventory;
     public Vector3 diceLocation;
     bool rolledDice;
@@ -15,7 +17,7 @@ public class Chris_Player : MonoBehaviour
 
     //ManaVariables
     bool rolledCrit, RolledFail;
-    int []manaValues = new int[6];
+    int []manaValues = new int[6]; // b, r, g, white, black, star, skull
     public Chris_ManaPanel manaInfo;
     
 
@@ -30,6 +32,7 @@ public class Chris_Player : MonoBehaviour
     private void Start()
     {
         resetManaVariables();
+        player = this;
     }
 
     private void Update()
