@@ -192,20 +192,20 @@ public class Chris_GameController : MonoBehaviour
     public void updateDraftInfo(string data)
     {
   
-    }
+    }//Script to recive the dice that should be in the draft for both players
 
     public void enemyTurnFinish(string data)
     {
         //would be for choosen spell info
         enemyFinished = true;
-    }
+    }//at the end of an enemys turn they could send info about the spell they used
 
     void updateEnemyInfo(string data)
     {
 
         //would be for updating what the enemy rolled
 
-    }
+    }//will occure after players roll to show eachothers mana and at the end of the turn to show updated health and sheild values
 
     public void nextTurn()//reset everything for next turn
     {
