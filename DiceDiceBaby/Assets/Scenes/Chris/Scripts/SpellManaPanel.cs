@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class SpellManaPanel : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class SpellManaPanel : MonoBehaviour
     public Sprite Black;
     public Sprite Crit;
 
-    public SpriteRenderer sprite;
+    public Image sprite;
     public TextMeshProUGUI value;
 
     public void updateCost(cost c)

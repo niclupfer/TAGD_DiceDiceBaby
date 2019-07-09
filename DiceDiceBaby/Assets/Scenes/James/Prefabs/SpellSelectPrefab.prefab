@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2041215377498751396}
   - component: {fileID: 2041215377498751397}
   m_Layer: 5
-  m_Name: Button
+  m_Name: SpellSelectPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: {fileID: 2041215377938416033}
-  spell: {fileID: 0}
+  spell: {fileID: 11400000, guid: 35a390cb3cc296e45a05b44c9192f7c1, type: 2}
 --- !u!222 &2041215377498751395
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -140,6 +140,17 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: UpdateSpellPanels
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2041215377498751394}
+          m_ObjectArgumentAssemblyTypeName: James_SpellSelector, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

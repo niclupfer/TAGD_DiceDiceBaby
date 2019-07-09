@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SpellCostPanel : MonoBehaviour
 {
-    public Chris_Player player;
+    public TextMeshProUGUI SpellName;
+    public TextMeshProUGUI SpellDesc;
     public List<SpellManaPanel> spellMPanels;
+
+    public James_Spell currentSpell;
 
     private void Start()
     {
@@ -16,15 +20,19 @@ public class SpellCostPanel : MonoBehaviour
         }
     }
 
-    public void UpdateSpellPanels()
+
+    public void UpdateSpellPanels(James_SpellSelector s)
     {
+        currentSpell = s.spell;
+        SpellName.text = s.spell.name;
+        SpellDesc.text = s.spell.description;
         foreach(SpellManaPanel smp in spellMPanels)
         {
             smp.disable();
         }
-        for(int i = 0; i < player.ChosenSpell.costs.Count; i++)
+        for(int i = 0; i < s.spell.costs.Count; i++)
         {
-            spellMPanels[i].updateCost(player.ChosenSpell.costs[i]);
+            spellMPanels[i].updateCost(s.spell.costs[i]);
         }
     }
 }

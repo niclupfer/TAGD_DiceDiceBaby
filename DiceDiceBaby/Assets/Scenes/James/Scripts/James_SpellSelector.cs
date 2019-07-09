@@ -16,12 +16,12 @@ public class James_SpellSelector : MonoBehaviour
 
     public void SetSpell()
     {
-        player = FindPlayer(transform).GetComponent<James_Player>();
-        if(player != null)
-        {
-            Debug.Log("Set " + player.name + " spell to " + spell.name + "!");
-            player.selectedSpell = spell;
-        }
+        //player = FindPlayer(transform).GetComponent<James_Player>();
+        //if(player != null)
+       // {
+       //     Debug.Log("Set " + player.name + " spell to " + spell.name + "!");
+       //     player.selectedSpell = spell;
+       // }
     }
 
     Transform FindPlayer(Transform p)
