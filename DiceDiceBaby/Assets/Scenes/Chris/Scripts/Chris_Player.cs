@@ -152,9 +152,9 @@ public class Chris_Player : MonoBehaviour
 
     public void addDice(Chris_Dice d)
     {
+        d.startPos = diceLocation - new Vector3(0, 0, 2 * diceInventory.Count - 1);
+        d.resetDie();
         diceInventory.Add(d);
-        d.transform.position = diceLocation - new Vector3(0, 0, 2 * diceInventory.Count - 1); ;
-        d.startPos = diceLocation - new Vector3(0,0, 2 * diceInventory.Count - 1);// add an offset so dice are not on top of eachother
     }
 
     public void chooseSpell(James_Spell spell)
