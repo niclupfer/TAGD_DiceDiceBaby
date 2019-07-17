@@ -24,7 +24,7 @@ public class Chris_Player : MonoBehaviour
     //combat variables
     int sheild;
     public James_Spell ChosenSpell;
-    public GameObject SpellList; //currently set to a buttion
+    public SpellCostPanel SpellList; //currently set to a buttion
     public GameObject RollButtion;
 
 
@@ -81,7 +81,7 @@ public class Chris_Player : MonoBehaviour
     void showSpellList()
     {
         //sort spell player can choose from
-        SpellList.SetActive(true);//display for them to pick
+        SpellList.activate(manaValues);//display for them to pick
     }
 
     void resetManaVariables()

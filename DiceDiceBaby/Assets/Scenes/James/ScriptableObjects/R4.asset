@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd1afbaa3a71c6744b3107faa3abb091, type: 3}
-  m_Name: Heal
+  m_Name: R4
   m_EditorClassIdentifier: 
-  name: heal2
-  description: 2
+  name: R4
+  description: Deal gody amounts of damage
   costs:
-  - manaRequirement: 0
-    price: 2
-  dmgType: 2
+  - manaRequirement: 1
+    price: 4
+  dmgType: 0
   dmg: 0
-  heal: 2
+  heal: 0
   applyShield: 0
   shieldTime: 0

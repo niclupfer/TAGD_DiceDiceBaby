@@ -11,7 +11,7 @@ public class SpellCostPanel : MonoBehaviour
     public List<SpellManaPanel> spellMPanels;
     public James_Spell currentSpell;
 
-    public List<James_Spell> spells;//maybe we refreance all the spells here and enable them according to mana given
+    public List<James_SpellSelector> spells;//maybe we refreance all the spells here and enable them according to mana given
 
     private void Start()
     {
@@ -42,5 +42,28 @@ public class SpellCostPanel : MonoBehaviour
         Chris_Player.player.chooseSpell(currentSpell);
     }
 
+    public void activate(int []manaVals)
+    {
+        foreach (James_SpellSelector spell in spells)
+        {
+            spell.disable();
+        }
+
+        foreach(James_SpellSelector spell in spells)
+        {
+            bool spellPassed = true;
+            for(int i = 0; i < spell.spell.costs.Count; i++)
+            {
+                Debug.Log(manaVals[(int)spell.spell.costs[i].manaRequirement]);
+                if (manaVals[(int)spell.spell.costs[i].manaRequirement] < spell.spell.costs[i].price)
+                {
+                    spellPassed = false;
+                }
+            }
+            if (spellPassed) spell.enable();
+        }
+
+        this.gameObject.SetActive(true);
+    }
     
 }

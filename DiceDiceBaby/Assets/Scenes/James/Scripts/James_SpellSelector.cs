@@ -24,28 +24,4 @@ public class James_SpellSelector : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /*
-    public void SetSpell()
-    {
-        //player = FindPlayer(transform).GetComponent<James_Player>();
-        //if(player != null)
-       // {
-       //     Debug.Log("Set " + player.name + " spell to " + spell.name + "!");
-       //     player.selectedSpell = spell;
-       // }
-    }
-
-    Transform FindPlayer(Transform p)
-    {
-        if(p.GetComponent<James_Player>() == null && transform.IsChildOf(transform))
-        {
-            p = FindPlayer(p.transform.parent);
-        }else if(p.GetComponent<James_Player>() == null)
-        {
-            Debug.Log("Cannot find parent player!");
-            return p = null;
-        }
-        return p;
-    }
-    */
 }
