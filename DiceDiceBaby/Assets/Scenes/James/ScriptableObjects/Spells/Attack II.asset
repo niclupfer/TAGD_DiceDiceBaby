@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd1afbaa3a71c6744b3107faa3abb091, type: 3}
-  m_Name: B4
+  m_Name: Attack II
   m_EditorClassIdentifier: 
-  name: B4
-  description: SUPER SHIELD
+  name: Attack II
+  description: Deals 3 damage.
   costs:
-  - manaRequirement: 0
-    price: 4
+  - manaRequirement: 1
+    price: 2
   dmgType: 0
-  dmg: 0
+  dmg: 3
   heal: 0
   applyShield: 0
   shieldTime: 0

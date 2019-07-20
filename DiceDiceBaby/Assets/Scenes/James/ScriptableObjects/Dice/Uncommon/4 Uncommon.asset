@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd1afbaa3a71c6744b3107faa3abb091, type: 3}
-  m_Name: B1
+  m_Script: {fileID: 11500000, guid: 2594ad5f28dd2b44cb735fcb909c42fe, type: 3}
+  m_Name: 4 Uncommon
   m_EditorClassIdentifier: 
-  name: B1
-  description: Heal
-  costs:
-  - manaRequirement: 0
-    price: 1
-  dmgType: 0
-  dmg: 0
-  heal: 0
-  applyShield: 0
-  shieldTime: 0
+  id: 4 Uncommon
+  Sides:
+  - symbol: 1
+    value: 2
+  - symbol: 0
+    value: 2
+  - symbol: 2
+    value: 2
+  - symbol: 6
+    value: 1
