@@ -11,6 +11,10 @@ public class DiceMsg
     public static short Ready = 1003;
     public static short Lobby = 1004;
 
+    public static short DicePool = 1005;
+    public static short DraftTurn = 1006;
+    public static short DraftPick= 1007;
+
     // host battle
     // join battle
     // battle info
@@ -44,9 +48,9 @@ public class DiceMsg
     // - cancel match
     // - player quit
 
-    public static short PlayerJoin = 1001;
-    public static short BattleBegin = 1002;
-    public static short Spell = 1003;
+    //public static short PlayerJoin = 1001;
+    //public static short BattleBegin = 1002;
+    //public static short Spell = 1003;
 };
 
 public class SomethingMessage : MessageBase
@@ -76,4 +80,20 @@ public class ReadyMsg : MessageBase
 public class LobbyMsg : MessageBase
 {
     public DicePlayer[] allPlayers;
+}
+
+public class DicePoolMsg : MessageBase
+{
+    public string diceData;
+}
+
+public class DiceDraftTurnMsg : MessageBase
+{
+    public int whosTurn;
+}
+
+public class DraftPickMsg : MessageBase
+{
+    public int fromPlayer;
+    public string dice;
 }

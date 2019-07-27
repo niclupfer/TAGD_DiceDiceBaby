@@ -22,6 +22,11 @@ public class LobbyMaster : MonoBehaviour
 
     DiceServer myServer;
     DiceClient myClient;
+
+    public int yourPlayerNum;
+
+    public Chris_GameController gameController;
+    public GameObject draftingContainer;
     
     void Start()
     {
@@ -60,8 +65,17 @@ public class LobbyMaster : MonoBehaviour
         theirAvatar.sprite = avatars[theirs + 1];
     }
 
+    public void ShowDiceDrafting()
+    {
+        Debug.Log("showing drafting");
+        lobbyScreen.SetActive(false);
+        draftingContainer.SetActive(true);
+    }
+
     public void BattleJoined()
     {
+        yourPlayerNum = myClient.playerNum;
+
         readyButt.GetComponentInChildren<Text>().text = "Ready?";
         readyButt.interactable = true;
     }
@@ -71,6 +85,7 @@ public class LobbyMaster : MonoBehaviour
         if(you.ready && them.ready)
         {
             statusText.text = "Starting battle";
+            
         }
         else if (!you.ready && them.ready)
         {
@@ -84,6 +99,52 @@ public class LobbyMaster : MonoBehaviour
         {
             statusText.text = "Waiting for both players";
         }
+    }
+
+    public void GenerateDice()
+    {
+        ShowDiceDrafting();
+
+        gameController.startDraft();
+
+        if (myServer == null)
+            Debug.Log("generate dice, big error, no server");
+
+        myServer.SendDicePool(gameController.GetDicePool(), NotYou());
+
+        myServer.SendDiceTurn(gameController.WhoPicksFirst());
+    }
+
+
+    int NotYou()
+    {
+        if (yourPlayerNum == 1)
+            return 2;
+        else if (yourPlayerNum == 2)
+            return 1;
+
+        return -1; // Error if this
+    }
+
+    public void SetDicePool(string diceData)
+    {
+        ShowDiceDrafting();
+        gameController.SetDicePool(diceData);
+    }
+
+    public void SetDiceTurn(int whosTurn)
+    {
+        gameController.SetTurn(whosTurn, yourPlayerNum);
+    }
+
+    public void EnemyPicked(string dice)
+    {
+        gameController.enemyPickDie(dice);
+    }
+
+    public void IPickedDie(string diceName)
+    {
+        myClient.SendDicePick(diceName);
     }
 
     public void HostGame()

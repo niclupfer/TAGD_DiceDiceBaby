@@ -24,6 +24,7 @@ public class DiceClient
         lobby = l;
         if (local)
         {
+            Debug.Log("local server");
             client = ClientScene.ConnectLocalServer();
         }
         else
@@ -34,14 +35,17 @@ public class DiceClient
         client.RegisterHandler(MsgType.Connect, OnConnected);
         client.RegisterHandler(DiceMsg.Welcome, OnWelcome);
         client.RegisterHandler(DiceMsg.Lobby, OnLobby);
+        client.RegisterHandler(DiceMsg.DicePool, OnDicePool);
+        client.RegisterHandler(DiceMsg.DraftTurn, OnDraftTurn);
+        client.RegisterHandler(DiceMsg.DraftPick, OnEnemyDraftPick);
 
-
+        Debug.Log("trying to connect to "+serverIP);
         client.Connect(serverIP, 4444);
     }
 
     public void OnConnected(NetworkMessage netMsg)
     {
-        Debug.Log("something connected to server");
+        Debug.Log("you connected successfully");
         //chats.AddMessage(0, "Client: on connected");
     }
 
@@ -68,13 +72,17 @@ public class DiceClient
             lobby.ShowAvatars(avatarNum, theirAvatar);
             lobby.CheckGameStatus(msg.you, msg.them);
             lobby.BattleJoined();
-        }
-        
+        }        
     }
 
     public void ReadyUp()
     {
         client.Send(DiceMsg.Ready, new ReadyMsg() { fromPlayer = playerNum, ready = true });
+    }
+
+    public void SendDicePick(string dice)
+    {
+        client.Send(DiceMsg.DraftPick, new DraftPickMsg() { fromPlayer = playerNum, dice = dice });
     }
 
     public void OnLobby(NetworkMessage netMsg)
@@ -96,6 +104,24 @@ public class DiceClient
             lobby.statusText.text = "Waiting for another player to join";
         }
 
+    }
+
+    void OnDicePool(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<DicePoolMsg>();
+        lobby.SetDicePool(msg.diceData);
+    }
+
+    public void OnDraftTurn(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<DiceDraftTurnMsg>();
+        lobby.SetDiceTurn(msg.whosTurn);
+    }
+
+    public void OnEnemyDraftPick(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<DraftPickMsg>();
+        lobby.EnemyPicked(msg.dice);
     }
 
     DicePlayer You(DicePlayer[] all)

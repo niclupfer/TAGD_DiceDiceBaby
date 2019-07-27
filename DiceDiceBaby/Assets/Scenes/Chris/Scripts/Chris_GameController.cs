@@ -22,7 +22,7 @@ public class Chris_GameController : MonoBehaviour
 
     //draft phase vars
     public static bool pickPhase = true;
-    bool yourTurn;
+    public bool yourTurn;
     int dicePicked = 0;
     public List<Chris_Dice> dicePool;
     public GameObject d6Prefab;
@@ -40,16 +40,22 @@ public class Chris_GameController : MonoBehaviour
     public int currentDie;
     public Text whosPick;
 
+    public LobbyMaster lobby;
     
     //temp variabls for testing
     public GameObject nextTurnButtion;
 
-    private void Start()
+    private void Awake()
     {
         Random.InitState((int)System.DateTime.Now.Ticks);
         gameController = this;//if we have mulitple scenes make this nondestoryable
-        startDraft();
+        //startDraft();
         //have it set up the game and start the dice drafting phase
+    }
+
+    private void Start()
+    {
+        //startDraft();
     }
 
     private void Update()
@@ -61,25 +67,33 @@ public class Chris_GameController : MonoBehaviour
 
     //Drafting functions
 
-    private void startDraft()
+    public void startDraft()
     {
         //bring up dice for drafting allowing player to alternate taking dice
         populateDicePool();// if the player is the host they will need to popualte the draft then somehow send the info the the enemy;
+
+        currentDie = 0;
+    }
+
+    public int WhoPicksFirst()
+    {
         //if host send signal for whos picking first;
-        int coinFlip = Random.Range(0, 2);
-        Debug.Log(coinFlip);
-        if (coinFlip == 0)
-        {
+        return Random.Range(0, 2) + 1;
+    }
+
+    public void SetTurn(int playerNum, int yourNum)
+    {
+        if (playerNum == yourNum)
             yourTurn = true;
+
+        if (playerNum == 1)
+        {
             whosPick.text = "Player One Choosing";
         }
         else
         {
-            yourTurn = false;
             whosPick.text = "Player Two Choosing";
         }
-
-
     }
 
     public void pickDie()//picking die during drafting
@@ -89,12 +103,14 @@ public class Chris_GameController : MonoBehaviour
             if (yourTurn)//player ones pick
             {
                 //send data to enemy for what dice you chose
-                string send = "Pick " + dicePool[currentDie].diceInfo.name;
+                string diceName = dicePool[currentDie].diceInfo.name;
                 Player.addDice(dicePool[currentDie]);
                 dicePool.RemoveAt(currentDie);
-                whosPick.text = "Player Two Choosing";
+                whosPick.text = "Other Player Choosing";
                 yourTurn = false;
                 checkDicePhaseState();
+
+                lobby.IPickedDie(diceName);
             }
         }
         
@@ -237,20 +253,24 @@ public class Chris_GameController : MonoBehaviour
 
     }
 
-    private void sendDicePool()
+    public string GetDicePool()
     {
-        string pool = "Pool ";
-        for(int i = 0; i < dicePool.Capacity - 1;i++)
+        string pool = "";
+        for(int i = 0; i < dicePool.Count - 1; i++)
         {
-            pool += dicePool[i].name + ",";
+            pool += dicePool[i].diceInfo.name + ",";
         }
-        pool += dicePool[dicePool.Capacity - 1];
+        pool += dicePool[dicePool.Count - 1].diceInfo.name;
 
+        Debug.Log("pool string: ");
+        Debug.Log(pool);
         //send the string?
+        return pool;
     }
 
-    public void getDicePool(string data)//look through dice pools looking for names? or have a hashtable with key being the name and data being the dice info
+    public void SetDicePool(string data)//look through dice pools looking for names? or have a hashtable with key being the name and data being the dice info
     {
+        Debug.Log("Setting dice pool: " + data);
         dicePool.Clear();
         string[] pool = data.Split(',');
         foreach (string s in pool)
@@ -266,6 +286,7 @@ public class Chris_GameController : MonoBehaviour
                         break;
                     }
                 }
+                D.updateSides();
                 dicePool.Add(D);
             }
             else if (s.Substring(0, 1) == "8")
@@ -279,6 +300,7 @@ public class Chris_GameController : MonoBehaviour
                         break;
                     }
                 }
+                D.updateSides();
                 dicePool.Add(D);
             }
             else if (s.Substring(0, 2) == "12")
@@ -292,6 +314,7 @@ public class Chris_GameController : MonoBehaviour
                         break;
                     }
                 }
+                D.updateSides();
                 dicePool.Add(D);
             }
             else if (s.Substring(0, 2) == "20")
@@ -305,14 +328,16 @@ public class Chris_GameController : MonoBehaviour
                         break;
                     }
                 }
+
                 dicePool.Add(D);
             }
-            currentDie = 0;
-            updateDiceInfo();
-            DiceCircle.resetAngle();
-            DiceCircle.PutDiceInRing();
         }
-        
+
+        Debug.Log("num of dice: " + dicePool.Count);
+        currentDie = 0;
+        updateDiceInfo();
+        DiceCircle.resetAngle();
+        DiceCircle.PutDiceInRing();
     }
 
     //game fuctions

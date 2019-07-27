@@ -28,6 +28,7 @@ public class DiceServer
         NetworkServer.Listen(4444);
         NetworkServer.RegisterHandler(MsgType.Connect, OnConnected);
         NetworkServer.RegisterHandler(DiceMsg.Ready, OnReady);
+        NetworkServer.RegisterHandler(DiceMsg.DraftPick, OnDraftPick);
 
         //NetworkServer.RegisterHandler(DiceMsg.Chat, OnChat);
 
@@ -62,6 +63,7 @@ public class DiceServer
             // create new dice player
             var newPlayer = new DicePlayer();
             newPlayer.playerNum = players.Count + 1;
+            newPlayer.connectionId = netMsg.conn.connectionId;
             newPlayer.avatar = TAGD.ChooseRandom(availableCharacters.ToArray());
             availableCharacters.Remove(newPlayer.avatar);
             players.Add(newPlayer.playerNum, newPlayer);
@@ -118,7 +120,64 @@ public class DiceServer
             Debug.Log("got a ready msg from "+p.playerNum);
             Debug.Log("is ready: " + players[msg.fromPlayer].ready);
             NetworkServer.SendToAll(DiceMsg.Lobby, lobbyMsg);
+
+            if(AllReady())
+            {
+                lobby.GenerateDice();
+            }
         }
+    }
+
+    void OnDraftPick(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<DraftPickMsg>();
+
+        var enemyConnectionId = GetOtherPlayer(msg.fromPlayer).connectionId;
+
+        NetworkServer.SendToClient(enemyConnectionId, DiceMsg.DraftPick,
+                new DraftPickMsg()
+                {
+                    dice = msg.dice
+                });
+
+    }
+
+    DicePlayer GetOtherPlayer(int from)
+    {
+        if (from == 1)
+            return players[2];
+        else if (from == 2)
+            return players[1];
+        else
+            Debug.LogError("No other playter!!!");
+
+        return new DicePlayer { playerNum = -1 };
+    }
+
+    bool AllReady()
+    {
+        if (players.ContainsKey(1) && players[1].ready
+            && players.ContainsKey(2) && players[2].ready)
+            return true;
+        return false;
+    }
+
+    public void SendDicePool(string diceData, int recievingPlayer)
+    {
+        var playerToGet = players[recievingPlayer];
+        NetworkServer.SendToClient(playerToGet.connectionId, DiceMsg.DicePool,
+                new DicePoolMsg()
+                {
+                    diceData = diceData
+                });
+    }
+
+    public void SendDiceTurn(int whosTurn)
+    {
+        NetworkServer.SendToAll(DiceMsg.DraftTurn, new DiceDraftTurnMsg()
+        {
+            whosTurn = whosTurn
+        });
     }
 
 
@@ -134,6 +193,7 @@ public struct DicePlayer
     public int playerNum;
     public int avatar;
     public bool ready;
+    public int connectionId;
 }
 
 
