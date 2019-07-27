@@ -15,20 +15,20 @@ public class DiceMsg
     public static short DraftTurn = 1006;
     public static short DraftPick= 1007;
 
-    // host battle
-    // join battle
-    // battle info
-    // welcome to battle <player info>
-    // ready to battle
-    // battle start
+    // X host battle
+    // x join battle
+    // X battle info
+    // X welcome to battle <player info>
+    // X ready to battle
+    // X battle start
 
-    // -- dice drafting
-    // -- server generates dice to choose from
-    // available dice <[dice]>
-    // its your turn
-    // i choose dice <dice>
-    // -- repeat until all players have N dice
-    // draft complete
+    // X -- dice drafting
+    // X -- server generates dice to choose from
+    // X available dice <[dice]>
+    // X its your turn
+    // X i choose dice <dice>
+    // X -- repeat until all players have N dice
+    // X draft complete
 
     // do your turn ( roll, choose spell)
     // heres my mana <[mana + counts]>

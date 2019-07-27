@@ -147,6 +147,21 @@ public class LobbyMaster : MonoBehaviour
         myClient.SendDicePick(diceName);
     }
 
+
+    public void HeresMyMana(string manaData)
+    {
+        // TODO
+    }
+
+    public void LearnEnemyMana(string manaData)
+    {
+        //gameController
+        //TODO
+
+    }
+
+
+
     public void HostGame()
     {
         //statusText.text = "starting host...";
