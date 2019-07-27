@@ -152,6 +152,7 @@ public class Chris_Player : MonoBehaviour
 
     public void addDice(Chris_Dice d)
     {
+        d.body.isKinematic = false;
         d.startPos = diceLocation - new Vector3(0, 0, 2 * diceInventory.Count - 1);
         d.resetDie();
         diceInventory.Add(d);

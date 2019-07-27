@@ -9,7 +9,7 @@ public class Chris_GameController : MonoBehaviour
 
     public static Chris_GameController gameController;
     public James_CircularDice DiceCircle;
-
+    public GameObject dicePoolLocation;
    
     public Chris_Player Player;
     public GameObject PlayerCam;
@@ -25,6 +25,14 @@ public class Chris_GameController : MonoBehaviour
     bool yourTurn;
     int dicePicked = 0;
     public List<Chris_Dice> dicePool;
+    public GameObject d6Prefab;
+    public GameObject d8Prefab;
+    public GameObject d12Prefab;
+    public GameObject d20Prefab;
+    public ScriptableDice []d6Dice;
+    public ScriptableDice []d8Dice;
+    public ScriptableDice []d12Dice;
+    public ScriptableDice []d20Dice;
     public GameObject draftCanvas;
     public GameObject draftCam;
     public DiceInfoPanel[] infoPanels;
@@ -56,6 +64,8 @@ public class Chris_GameController : MonoBehaviour
     private void startDraft()
     {
         //bring up dice for drafting allowing player to alternate taking dice
+        populateDicePool();// if the player is the host they will need to popualte the draft then somehow send the info the the enemy;
+        //if host send signal for whos picking first;
         int coinFlip = Random.Range(0, 2);
         Debug.Log(coinFlip);
         if (coinFlip == 0)
@@ -69,13 +79,7 @@ public class Chris_GameController : MonoBehaviour
             whosPick.text = "Player Two Choosing";
         }
 
-        //PopulateDraft() if the player is the host they will need to popualte the draft then somehow send the info the the enemy;
 
-        //if host send signal for whos picking first;
-        currentDie = 0;
-        updateDiceInfo();
-        DiceCircle.resetAngle();
-        DiceCircle.PutDiceInRing();
     }
 
     public void pickDie()//picking die during drafting
@@ -101,14 +105,14 @@ public class Chris_GameController : MonoBehaviour
         {
             for (int i = 0; i < dicePool.Count; i++)
             {
-                if (dicePool[i].diceInfo.id.Equals(diceName))
-                {
-                    dicePool[i].transform.position = new Vector3(100, 100, 100);
-                    dicePool.RemoveAt(i);
+                //if (dicePool[i].diceInfo.id.Equals(diceName))
+                //{
+                    dicePool[i].transform.position = new Vector3(100 * dicePool.Count, 100, 100);
+                    dicePool.RemoveAt(0);
                     whosPick.text = "Your Pick";
                     yourTurn = true;
                     break;
-                }
+                //}
             }
             checkDicePhaseState();
         }
@@ -181,17 +185,141 @@ public class Chris_GameController : MonoBehaviour
 
     }//updates dice panel info
 
-    //game fucntions
+    private void populateDicePool()
+    {
+        //Only host should do this?
+
+        dicePool.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject newDie;
+            ScriptableDice newDiceInfo;
+            int r = Random.Range(0, 3);
+            if (r == 0)
+            {
+                int random = Random.Range(0, d6Dice.Length - 1);
+                newDie = Instantiate(d6Prefab,dicePoolLocation.transform);
+                newDiceInfo = d6Dice[random];
+                Debug.Log("D6 Index " + random);
+            }
+            else if (r == 1)
+            {
+                int random = Random.Range(0, d8Dice.Length - 1);
+                newDie = Instantiate(d8Prefab, dicePoolLocation.transform);
+                newDiceInfo = d8Dice[random];
+                Debug.Log("D8 Index " + random);
+            }
+            else if(r == 2)
+            {
+                int random = Random.Range(0, d12Dice.Length - 1);
+                newDie = Instantiate(d12Prefab, dicePoolLocation.transform);
+                newDiceInfo = d12Dice[random];
+                Debug.Log("D12 Index " + random);
+            }
+            else
+            {
+                int random = Random.Range(0, d20Dice.Length - 1);
+                newDie = Instantiate(d20Prefab, dicePoolLocation.transform);
+                newDiceInfo = d20Dice[random];
+                Debug.Log("D20 Index " + random);
+            }
+            Chris_Dice dieComponent = newDie.GetComponent<Chris_Dice>();
+            dieComponent.diceInfo = newDiceInfo;
+            dieComponent.updateSides();
+            dicePool.Add(dieComponent);
+        }
+
+        currentDie = 0;
+        updateDiceInfo();
+        DiceCircle.resetAngle();
+        DiceCircle.PutDiceInRing();
+
+    }
+
+    private void sendDicePool()
+    {
+        string pool = "";
+        for(int i = 0; i < dicePool.Capacity - 1;i++)
+        {
+            pool += dicePool[i].name + ",";
+        }
+        pool += dicePool[dicePool.Capacity - 1];
+
+        //send the string?
+    }
+
+    public void getDicePool(string data)//look through dice pools looking for names? or have a hashtable with key being the name and data being the dice info
+    {
+        dicePool.Clear();
+        string[] pool = data.Split(',');
+        foreach (string s in pool)
+        {
+            if(s.Substring(0,1) == "6")
+            {
+                Chris_Dice D = Instantiate(d6Prefab, dicePoolLocation.transform).GetComponent<Chris_Dice>();
+                for(int i = 0; i < d6Dice.Length;i++)
+                {
+                    if(d6Dice[i].name.Equals(s))
+                    {
+                        D.diceInfo = d6Dice[i];
+                        break;
+                    }
+                }
+                dicePool.Add(D);
+            }
+            else if (s.Substring(0, 1) == "8")
+            {
+                Chris_Dice D = Instantiate(d8Prefab, dicePoolLocation.transform).GetComponent<Chris_Dice>();
+                for (int i = 0; i < d8Dice.Length; i++)
+                {
+                    if (d8Dice[i].name.Equals(s))
+                    {
+                        D.diceInfo = d8Dice[i];
+                        break;
+                    }
+                }
+                dicePool.Add(D);
+            }
+            else if (s.Substring(0, 2) == "12")
+            {
+                Chris_Dice D = Instantiate(d12Prefab, dicePoolLocation.transform).GetComponent<Chris_Dice>();
+                for (int i = 0; i < d12Dice.Length; i++)
+                {
+                    if (d12Dice[i].name.Equals(s))
+                    {
+                        D.diceInfo = d12Dice[i];
+                        break;
+                    }
+                }
+                dicePool.Add(D);
+            }
+            else if (s.Substring(0, 2) == "20")
+            {
+                Chris_Dice D = Instantiate(d20Prefab, dicePoolLocation.transform).GetComponent<Chris_Dice>();
+                for (int i = 0; i < d20Dice.Length; i++)
+                {
+                    if (d20Dice[i].name.Equals(s))
+                    {
+                        D.diceInfo = d20Dice[i];
+                        break;
+                    }
+                }
+                dicePool.Add(D);
+            }
+            currentDie = 0;
+            updateDiceInfo();
+            DiceCircle.resetAngle();
+            DiceCircle.PutDiceInRing();
+        }
+        
+    }
+
+    //game fuctions
 
     public int getTurn()
     {
         return turnCount;
     }
-
-    public void updateDraftInfo(string data)
-    {
-  
-    }//Script to recive the dice that should be in the draft for both players
 
     public void enemyTurnFinish(string data)
     {

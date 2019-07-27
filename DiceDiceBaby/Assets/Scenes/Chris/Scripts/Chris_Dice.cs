@@ -10,7 +10,7 @@ public class Chris_Dice : MonoBehaviour
     public Chris_Side[] Sides;
     public ScriptableDice diceInfo;
     public Vector3 startPos;
-    Rigidbody body;
+    public Rigidbody body;
     bool hasLanded;
     bool hasRolled;
 
@@ -27,14 +27,8 @@ public class Chris_Dice : MonoBehaviour
         hasLanded = false;
         hasRolled = false;
         body.useGravity = false;
-
-        //put info into sides
-        for (int i = 0; i < Sides.Length; i++)
-        {
-            Sides[i].info = diceInfo.Sides[i];
-            Sides[i].updateSprite();
-        }
-        if (Chris_GameController.pickPhase && Chris_GameController.gameController != null) Chris_GameController.gameController.updateDiceInfo();
+        body.isKinematic = true;
+        //if (Chris_GameController.pickPhase && Chris_GameController.gameController != null) Chris_GameController.gameController.updateDiceInfo();
     }
 
     private void Update()
@@ -102,6 +96,15 @@ public class Chris_Dice : MonoBehaviour
             if (Sides[i].faceDown() == true) return Sides[i];
         }
         return null;
+    }
+
+    public void updateSides()
+    {
+        for (int i = 0; i < Sides.Length; i++)
+        {
+            Sides[i].info = diceInfo.Sides[i];
+            Sides[i].updateSprite();
+        }
     }
 
     /***********************************************Drafting functions Start*********************************/

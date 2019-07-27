@@ -10,6 +10,7 @@ public class SpellCostPanel : MonoBehaviour
     public TextMeshProUGUI SpellDesc;
     public List<SpellManaPanel> spellMPanels;
     public James_Spell currentSpell;
+    public RectTransform scrollField;
 
     public List<James_SpellSelector> spells;//maybe we refreance all the spells here and enable them according to mana given
 
@@ -48,7 +49,7 @@ public class SpellCostPanel : MonoBehaviour
         {
             spell.disable();
         }
-
+        int count = 0;
         foreach(James_SpellSelector spell in spells)
         {
             bool spellPassed = true;
@@ -60,8 +61,14 @@ public class SpellCostPanel : MonoBehaviour
                     spellPassed = false;
                 }
             }
-            if (spellPassed) spell.enable();
+            if (spellPassed)
+            {
+                spell.enable();
+                count++;
+            }
         }
+
+        scrollField.sizeDelta = new Vector2(scrollField.sizeDelta.x, count * 35 + 5);
 
         this.gameObject.SetActive(true);
     }
