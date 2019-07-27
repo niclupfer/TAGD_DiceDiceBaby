@@ -156,7 +156,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 11, y: -169}
-  m_SizeDelta: {x: 524.1, y: 37.7}
+  m_SizeDelta: {x: 524.1, y: 66.6}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &483578393
 MonoBehaviour:
@@ -214,7 +214,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Battle Address: ??'
+  m_Text: 'Battle Address
+
+    ??'
 --- !u!222 &483578395
 CanvasRenderer:
   m_ObjectHideFlags: 0

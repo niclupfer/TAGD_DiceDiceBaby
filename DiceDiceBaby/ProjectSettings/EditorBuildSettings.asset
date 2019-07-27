@@ -8,19 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Nic/Lobby.unity
     guid: 3b2a48eefec2bdc44abc469ee3a51ec4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Nic/DiceTest.unity
     guid: 09a01f8a1986e094bb9427525e8954fb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Chris/Chris_DiceRoll.unity
     guid: 24cd166bf7d376d498377b0b7c03399d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Chris/Chris_DiceDraft.unity
     guid: 13804478509e0b744b3e17fe5b0b6d5b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/James/James.unity
     guid: dae378598c5219d44978254b68c49665
   m_configObjects: {}

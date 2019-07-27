@@ -126,11 +126,11 @@ public class LobbyMaster : MonoBehaviour
     {
         if (myServer != null)
         {
-            gameText.text = "Battle Address/n" + myServer.address;
+            gameText.text = "Battle Address \n" + myServer.address;
         }
         else if (myClient != null)
         {
-            gameText.text = "Battle Address/n" + myClient.address;
+            gameText.text = "Battle Address \n" + myClient.address;
         }
         else
         {

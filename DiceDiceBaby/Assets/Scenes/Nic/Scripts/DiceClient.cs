@@ -84,7 +84,12 @@ public class DiceClient
 
         if(msg.allPlayers.Length == 2)
         {
-            lobby.CheckGameStatus(You(msg.allPlayers), Them(msg.allPlayers));
+            DicePlayer you, them;
+            you = You(msg.allPlayers);
+            them = Them(msg.allPlayers);
+
+            lobby.ShowAvatars(you.avatar, them.avatar);
+            lobby.CheckGameStatus(you, them);
         }
         else
         {

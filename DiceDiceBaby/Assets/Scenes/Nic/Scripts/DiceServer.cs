@@ -31,7 +31,6 @@ public class DiceServer
 
         //NetworkServer.RegisterHandler(DiceMsg.Chat, OnChat);
 
-
         address = LocalIPAddress();
         Debug.Log("host ip: " + address);       
     }
@@ -84,6 +83,12 @@ public class DiceServer
                     totalPlayers = -1
                 });
         }
+
+        var lobbyMsg = new LobbyMsg()
+        {
+            allPlayers = (new List<DicePlayer>(players.Values)).ToArray()
+        };
+        NetworkServer.SendToAll(DiceMsg.Lobby, lobbyMsg);
     }
 
     DicePlayer OtherPlayer(int num)
@@ -104,11 +109,14 @@ public class DiceServer
         {
             var p = players[msg.fromPlayer];
             p.ready = msg.ready;
+            players[msg.fromPlayer] = p;
 
             var lobbyMsg = new LobbyMsg()
             {
                 allPlayers = (new List<DicePlayer>(players.Values)).ToArray()
-        };
+            };
+            Debug.Log("got a ready msg from "+p.playerNum);
+            Debug.Log("is ready: " + players[msg.fromPlayer].ready);
             NetworkServer.SendToAll(DiceMsg.Lobby, lobbyMsg);
         }
     }
