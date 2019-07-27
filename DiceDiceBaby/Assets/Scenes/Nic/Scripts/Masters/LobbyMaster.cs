@@ -2,168 +2,140 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-public class CustomMsgID
-{
-    public static short Something = 1000;
-
-    // host battle
-    // join battle
-    // welcome to battle <player info>
-    // ready to battle
-    // battle start
-
-    // -- dice drafting
-    // -- server generates dice to choose from
-    // available dice <[dice]>
-    // its your turn
-    // i choose dice <dice>
-    // -- repeat until all players have N dice
-    // draft complete
-    
-    // do your turn ( roll, choose spell)
-    // - peek at dice
-    // - your dice is being looked at
-    // - return the players dice
-    // i'm casting <spell>
-    // -- once all players have sent in their spells
-    // -- figure our order and effects
-    // -- applies the effects to each to player
-    // receive spell <spell>
-    // update stats <[player info]>
-    // 
-    // -- server checks for win
-    // - gameover <winner info>
-    // - repeat do your turn
-
-    // - cancel match
-    // - player quit
-
-    public static short PlayerJoin = 1001;
-    public static short BattleBegin = 1002;
-    public static short Spell = 1003;
-};
-
-
-
-public class SomethingMessage : MessageBase
-{
-    public string whatever;
-}
 
 public class LobbyMaster : MonoBehaviour
 {
+    public GameObject titleScreen;
+    public GameObject lobbyScreen;
+
     public Text statusText;
     public Button readyButt;
 
-    public bool serverUp;
-    NetworkClient client;
+    public InputField addressInput;
+    public Text gameText;
 
+    public Sprite[] avatars;
+    public Image yourAvatar;
+    public Image theirAvatar;
+
+    DiceServer myServer;
+    DiceClient myClient;
+    
     void Start()
     {
-        readyButt.enabled = false;
-        readyButt.GetComponentInChildren<Text>().text = "Waiting for Opponent";
+        readyButt.GetComponentInChildren<Text>().text = "Not in a game";
 
-        statusText.text = "Deciding what to do...";
+        statusText.text = "No game";
+    }
 
-        if (GameInfo.netRole == NetRole.hostPlayer)
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Quit();
+    }
+
+    void ShowLobby()
+    {
+        titleScreen.SetActive(false);
+        lobbyScreen.SetActive(true);
+    }
+
+    public void ShowTitle()
+    {
+        // just refresh the scene to be safe
+        SceneManager.LoadScene("Title", LoadSceneMode.Single);
+    }
+
+    public void ShowAvatars(int yours, int theirs)
+    {
+        Debug.Log("showing avatars");
+        yourAvatar.sprite = avatars[yours + 1];
+        theirAvatar.sprite = avatars[theirs + 1];
+    }
+
+    public void BattleJoined()
+    {
+        readyButt.GetComponentInChildren<Text>().text = "Ready?";
+        readyButt.interactable = true;
+    }
+
+    public void CheckGameStatus(DicePlayer you, DicePlayer them)
+    {
+        if(you.ready && them.ready)
         {
-            // host a game
-            statusText.text = "hosting a game";
-            SetupServer();
-            SetupLocalClient();
+            statusText.text = "Starting battle";
         }
-        else if (GameInfo.netRole == NetRole.player)
+        else if (!you.ready && them.ready)
         {
-            // search for a game
-            statusText.text = "looking for a game to join";
-            SetupClient();
+            statusText.text = "They are ready, waiting for you";
         }
-
-    }
-
-    void Update()
-    {
-        if(client != null && Input.GetKeyDown(KeyCode.Space))
+        else if (you.ready && !them.ready)
         {
-            var msg = new SomethingMessage()
-            {
-                whatever = "yo yo bro: " + Time.time
-            };
-            
-            client.Send(CustomMsgID.Something, msg);
+            statusText.text = "You are ready, waiting for them";
+        }
+        else
+        {
+            statusText.text = "Waiting for both players";
         }
     }
 
-    // Create a server and listen on a port
-    public void SetupServer()
+    public void HostGame()
     {
-        NetworkServer.Listen(4444);
-        NetworkServer.RegisterHandler(CustomMsgID.Something, ServerMessage);
-        GetComponent<NetworkDiscovery>().Initialize();
-        GetComponent<NetworkDiscovery>().StartAsServer();
+        //statusText.text = "starting host...";
 
-        statusText.text = "Host running";
+        myServer = new DiceServer(GetComponent<NetworkDiscovery>(), this);
+        RefreshGameInfo();
+
+        myClient = new DiceClient(myServer.address, this, false);
+
+        ShowLobby();
     }
 
-    public void ServerMessage(NetworkMessage msg)
+    public void JoinGame()
     {
-        Debug.Log("server got message");
-        NetworkServer.SendToAll(CustomMsgID.Something, msg.ReadMessage<SomethingMessage>());
+        if (myServer == null)
+        {
+            var address = addressInput.text;
+            statusText.text = "Looking for Battle";
+            ConnectClient(address);
+            ShowLobby();
+        }
     }
 
-    // Create a client and connect to the server port
-    public void SetupClient()
+    void ConnectClient(string serverIP)
     {
-        GetComponent<NetworkDiscovery>().Initialize();
-        GetComponent<NetworkDiscovery>().StartAsClient();
-
-        statusText.text = "looking for hosts";
-    }
-
-    public void ConnectClient(string serverIP)
-    {
-        client = new NetworkClient();
-        client.RegisterHandler(MsgType.Connect, OnConnected);
-        client.RegisterHandler(CustomMsgID.Something, OnCommand);
-        client.Connect(serverIP, 4444);
-
-        statusText.text = "connected to host";
-
-        GetComponent<NetworkDiscovery>().StopAllCoroutines();
-        GetComponent<NetworkDiscovery>().StopBroadcast();
-    }
-
-    // Create a local client and connect to the local server
-    public void SetupLocalClient()
-    {
-        client = ClientScene.ConnectLocalServer();
-        client.RegisterHandler(MsgType.Connect, OnConnected);
-        client.RegisterHandler(CustomMsgID.Something, OnCommand);
-    }
-
-    public void OnConnected(NetworkMessage netMsg)
-    {
-        Debug.Log("Connected to server");
-
-        statusText.text = "connection complete";
+        myClient = new DiceClient(serverIP, this, false);
         
-
+        statusText.text = "Connected to Battle";
     }
 
-    public void OnCommand(NetworkMessage netMsg)
+    public void ReadyUp()
     {
-        Debug.Log("GotMessage");
-        var msg = netMsg.ReadMessage<SomethingMessage>();
-        Debug.Log(msg.whatever);
+        myClient.ReadyUp();
     }
-}
 
-public class MyNetworkDiscovery : NetworkDiscovery
-{
-    public override void OnReceivedBroadcast(string fromAddress, string data)
+
+    void RefreshGameInfo()
     {
-        Debug.Log("Received broadcast from: " + fromAddress + " with the data: " + data);
+        if (myServer != null)
+        {
+            gameText.text = "Battle Address/n" + myServer.address;
+        }
+        else if (myClient != null)
+        {
+            gameText.text = "Battle Address/n" + myClient.address;
+        }
+        else
+        {
+            gameText.text = "No Game Server or Client";
+        }
     }
+
 }

@@ -18,15 +18,8 @@ public class TitleMaster : MonoBehaviour
         SceneManager.LoadScene(nic_diceTestScene, LoadSceneMode.Single);
     }
 
-    public void Host()
+    public void Lobby()
     {
-        GameInfo.netRole = NetRole.hostPlayer;
-        SceneManager.LoadScene(nic_lobbySceneName, LoadSceneMode.Single);
-    }
-
-    public void Join()
-    {
-        GameInfo.netRole = NetRole.player;
         SceneManager.LoadScene(nic_lobbySceneName, LoadSceneMode.Single);
     }
 
