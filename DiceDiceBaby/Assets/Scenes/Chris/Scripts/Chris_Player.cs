@@ -71,11 +71,24 @@ public class Chris_Player : MonoBehaviour
                     
                 }
                 Debug.Log(rollDebug);
-                manaInfo.updateManaInfo(manaValues, rolledCrit, RolledFail);//update ui
+                manaInfo.updateManaInfo(manaValues, RolledFail);//update ui
+                sendManaInfo();
                 //send mana info to enemy through message
                 showSpellList();//show the spell list for picking
             }
         }
+    }
+
+    private void sendManaInfo()
+    {
+        string s = "Mana ";
+        for (int i = 0; i < manaValues.Length - 1; i++)
+        {
+            s += manaValues[i] + ",";
+        }
+        s += manaValues[manaValues.Length - 1];
+
+        //send
     }
 
     void showSpellList()

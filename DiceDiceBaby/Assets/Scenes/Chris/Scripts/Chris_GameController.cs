@@ -89,6 +89,7 @@ public class Chris_GameController : MonoBehaviour
             if (yourTurn)//player ones pick
             {
                 //send data to enemy for what dice you chose
+                string send = "Pick " + dicePool[currentDie].diceInfo.name;
                 Player.addDice(dicePool[currentDie]);
                 dicePool.RemoveAt(currentDie);
                 whosPick.text = "Player Two Choosing";
@@ -105,14 +106,14 @@ public class Chris_GameController : MonoBehaviour
         {
             for (int i = 0; i < dicePool.Count; i++)
             {
-                //if (dicePool[i].diceInfo.id.Equals(diceName))
-                //{
+                if (dicePool[i].diceInfo.id.Equals(diceName))
+                {
                     dicePool[i].transform.position = new Vector3(100 * dicePool.Count, 100, 100);
-                    dicePool.RemoveAt(0);
+                    dicePool.RemoveAt(i);
                     whosPick.text = "Your Pick";
                     yourTurn = true;
                     break;
-                //}
+                }
             }
             checkDicePhaseState();
         }
@@ -238,7 +239,7 @@ public class Chris_GameController : MonoBehaviour
 
     private void sendDicePool()
     {
-        string pool = "";
+        string pool = "Pool ";
         for(int i = 0; i < dicePool.Capacity - 1;i++)
         {
             pool += dicePool[i].name + ",";
@@ -329,8 +330,19 @@ public class Chris_GameController : MonoBehaviour
 
     void updateEnemyInfo(string data)
     {
+        string[] manaInfo = data.Split(',');
 
-        //would be for updating what the enemy rolled
+        int[] manaVals = new int[5];
+
+        for (int i = 0; i < manaInfo.Length - 1; i++)
+        {
+            manaVals[i] = int.Parse(manaInfo[i]);
+        }
+        if (manaInfo[5].Equals("0"))
+        {
+            enemyInfo.updateManaInfo(manaVals, false);
+        }
+        else enemyInfo.updateManaInfo(manaVals, true);
 
     }//will occure after players roll to show eachothers mana and at the end of the turn to show updated health and sheild values
 

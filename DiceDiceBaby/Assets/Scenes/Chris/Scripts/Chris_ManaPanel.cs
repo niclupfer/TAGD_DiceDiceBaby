@@ -14,7 +14,7 @@ public class Chris_ManaPanel : MonoBehaviour
     public Text critVal;
     public GameObject Miss;
 
-    public void updateManaInfo(int[] manaVals, bool crit, bool miss)
+    public void updateManaInfo(int[] manaVals, bool miss)
     {
         redVal.text = manaVals[1].ToString();
         greenVal.text = manaVals[2].ToString();
