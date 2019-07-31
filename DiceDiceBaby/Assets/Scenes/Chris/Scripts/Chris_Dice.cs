@@ -56,7 +56,8 @@ public class Chris_Dice : MonoBehaviour
     public void resetDie()//go abck to roll posistion
     {
         body.useGravity = false;
-        body.MovePosition(startPos);
+        //body.MovePosition(startPos);
+        transform.position = startPos;
         transform.rotation = new Quaternion(0, 0, 0, 0);
         body.velocity = new Vector3(0, 0, 0);
         body.angularVelocity = new Vector3(0, 0, 0);

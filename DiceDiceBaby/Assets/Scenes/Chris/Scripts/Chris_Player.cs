@@ -36,6 +36,7 @@ public class Chris_Player : MonoBehaviour
     {
         resetManaVariables();
         player = this;
+        health = healthMax;
     }
 
     private void Update()
@@ -136,8 +137,8 @@ public class Chris_Player : MonoBehaviour
 
     void checkHealthOverload()
     {
-        if (health > healthMax)
-            health = healthMax;
+        if (health > healthMax) health = healthMax;
+        else if (health <= 0) Chris_GameController.gameController.endGame();
     }
 
     public int getScore()
@@ -175,7 +176,8 @@ public class Chris_Player : MonoBehaviour
     public void addDice(Chris_Dice d)
     {
         d.body.isKinematic = false;
-        d.startPos = diceLocation - new Vector3(0, 0, 2 * diceInventory.Count - 1);
+        d.transform.SetParent(this.transform);
+        d.startPos = this.transform.position - new Vector3(0, 0, 2 * diceInventory.Count - 1);
         d.resetDie();
         diceInventory.Add(d);
     }
@@ -253,21 +255,22 @@ public class Chris_Player : MonoBehaviour
         //Shield,totalAmount,triggerEffect,critVal
         //Boost,totalAmount,triggerEffect,critVal
         //Repeat,totalAmount,triggerEffect,critVal
-        string[] spellData = data.Split(',');
-
-        if (spellData[0] == "Attack")
+        if(!data.Equals("Fail"))
         {
-            int totalDamage = (int.Parse(spellData[1]) + int.Parse(spellData[3])) * int.Parse(spellData[2]); //should crit go through trigger effect?
+            string[] spellData = data.Split(',');
+            if (spellData[0] == "Attack")
+            {
+                int totalDamage = (int.Parse(spellData[1]) + int.Parse(spellData[3])) * int.Parse(spellData[2]); //should crit go through trigger effect?
 
-            //playAnimation maybe do it trigger effect amount of times with dmg vals popping up
+                //playAnimation maybe do it trigger effect amount of times with dmg vals popping up
 
-            changeHealth(totalDamage, James_Enum.damageType.direct);
+                changeHealth(totalDamage, James_Enum.damageType.direct);
+            }
+            else if (spellData[0] == "Heal") ;//do animation?
+            else if (spellData[0] == "Sheild") ;
+            else if (spellData[0] == "Boost") ;
+            else if (spellData[0] == "Repeat") ;
         }
-        else if (spellData[0] == "Heal") ;//do animation?
-        else if (spellData[0] == "Sheild") ;
-        else if (spellData[0] == "Boost") ;
-        else if (spellData[0] == "Repeat") ;
-        else; // Enemy Failed
         if (sheild > 0) sheild--;
         Chris_GameController.gameController.enemyFinished = true;
     }

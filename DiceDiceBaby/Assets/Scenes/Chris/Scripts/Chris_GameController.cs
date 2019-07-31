@@ -395,11 +395,8 @@ public class Chris_GameController : MonoBehaviour
 
     public void endGame()
     {
-        enemyFinished = false;//temp
-        ////change to helth 
-        //if (Player1.getScore() > Player2.getScore()) Debug.Log("Player One wins!");
-        //else if (Player1.getScore() < Player2.getScore()) Debug.Log("Player Two wins!");
-        //else Debug.Log("Tie~~!");
+        enemyFinished = false;
+        //ending the game happens here;
         Debug.Log("GameOver");
     }
 
