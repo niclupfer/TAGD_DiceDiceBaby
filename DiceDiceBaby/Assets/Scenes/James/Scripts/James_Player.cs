@@ -63,7 +63,7 @@ public class James_Player : MonoBehaviour
             manaPool[(int)(c.manaRequirement)] -= c.price;
         }
 
-        target.changeHealth(-s.dmg, s.dmgType);
-        this.changeHealth(+s.heal, James_Enum.damageType.healing);
+        //target.changeHealth(-s.dmg, s.dmgType);
+        //this.changeHealth(+s.heal, James_Enum.damageType.healing);
     }
 }

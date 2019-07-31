@@ -12,6 +12,7 @@ public class Chris_Player : MonoBehaviour
     bool rolledDice;
     bool diceFinishedRolling;
     bool turnFinsihed;
+    public bool spellChosen;
     int healthMax = 15;
     int health = 0;
 
@@ -22,7 +23,9 @@ public class Chris_Player : MonoBehaviour
     
 
     //combat variables
-    int sheild;
+    int sheild = 0;
+    int triggerEffect = 1;
+    int addedDamage = 0;
     public James_Spell ChosenSpell;
     public SpellCostPanel SpellList; //currently set to a buttion
     public GameObject RollButtion;
@@ -94,7 +97,13 @@ public class Chris_Player : MonoBehaviour
     void showSpellList()
     {
         //sort spell player can choose from
-        SpellList.activate(manaValues);//display for them to pick
+        if(RolledFail)//dont show spell list
+        {
+            spellChosen = true;
+        }
+        else SpellList.activate(manaValues);//display for them to pick
+
+        
     }
 
     void resetManaVariables()
@@ -115,12 +124,13 @@ public class Chris_Player : MonoBehaviour
 
     public void changeHealth(int i, James_Enum.damageType d)
     {
-        if (d != James_Enum.damageType.direct)
+        if (d == James_Enum.damageType.poison)
         {
-            health += i;
+            health -= i;
         }
         else if ((d == James_Enum.damageType.direct) && sheild <= 0)
-            health += i;
+            health -= i;
+        else if (d == James_Enum.damageType.healing) health += i;
         checkHealthOverload();
     }
 
@@ -154,7 +164,6 @@ public class Chris_Player : MonoBehaviour
         {
             die.resetDie();
         }
-        if(sheild > 0)sheild--;
         RollButtion.SetActive(true);
     }
 
@@ -174,13 +183,93 @@ public class Chris_Player : MonoBehaviour
     public void chooseSpell(James_Spell spell)
     {
         ChosenSpell = spell;//select as chosen spell
-        foreach (cost c in spell.costs)//take mana away 
+        ChosenSpell.critAmount = manaValues[4];
+        ChosenSpell.triggerEffect = triggerEffect;
+        spellChosen = true;
+    }
+
+    public void processMySpell()
+    {
+        string spellString = "";
+        if (RolledFail == false)
         {
-            manaValues[(int)(c.manaRequirement)] -= c.price;
+            if (ChosenSpell.name.Substring(0, 6).Equals("Attack"))//attack spell
+            {
+                ChosenSpell.amount += addedDamage;//put added dmg in
+                spellString = "Attack," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount; //dmg = (basedmg + crit dmg) * trigger effect 
+                                                                                                                   //reset trigger effect and added dmg
+                addedDamage = 0;
+                triggerEffect = 1;
+            }
+            else if (ChosenSpell.name.Substring(0, 6).Equals("Boost"))//add dmg to next dmg
+            {
+                for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
+                {
+                    addedDamage += ChosenSpell.amount + 3 * ChosenSpell.critAmount;//Boost = amount + ctit * 3
+                }
+                spellString = "Boost," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
+                triggerEffect = 1;
+            }
+            else if (ChosenSpell.name.Substring(0, 6).Equals("Heal"))//healing
+            {
+                for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
+                {
+                    changeHealth(ChosenSpell.amount + 3 * ChosenSpell.critAmount, ChosenSpell.dmgType);// healing = amount + crit * 3
+                }
+                spellString = "Heal," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
+                triggerEffect = 1;
+            }
+            else if (ChosenSpell.name.Substring(0, 6).Equals("Repeat"))//trigger effect
+            {
+                int newTriggerEffect = 0;//temp for the new tigger effect 
+                for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
+                {
+                    addedDamage += 3 * ChosenSpell.critAmount;//if crit get more added dmg
+                    newTriggerEffect += ChosenSpell.amount;//add up trigger effect incase stacking 
+                }
+                spellString = "Repeat," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
+                triggerEffect = newTriggerEffect;
+            }
+            else if (ChosenSpell.name.Substring(0, 6).Equals("Sheild"))
+            {
+                for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
+                {
+                    sheild += ChosenSpell.amount;
+                    if (ChosenSpell.critAmount > 0) changeHealth(ChosenSpell.critAmount * 3, James_Enum.damageType.healing);//if crit get health
+                }
+                spellString = "Sheild," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
+                triggerEffect = 1;
+            }
         }
-
-
+        else spellString = "Fail";
+        //send out data String
         turnFinsihed = true;
+    }
+
+    public void processEnemySpell(string data)
+    {
+        //Attack,totalDamage,triggerEffect,critVal
+        //Heal,totalAmount,triggerEffect,critVal
+        //Shield,totalAmount,triggerEffect,critVal
+        //Boost,totalAmount,triggerEffect,critVal
+        //Repeat,totalAmount,triggerEffect,critVal
+        string[] spellData = data.Split(',');
+
+        if (spellData[0] == "Attack")
+        {
+            int totalDamage = (int.Parse(spellData[1]) + int.Parse(spellData[3])) * int.Parse(spellData[2]); //should crit go through trigger effect?
+
+            //playAnimation maybe do it trigger effect amount of times with dmg vals popping up
+
+            changeHealth(totalDamage, James_Enum.damageType.direct);
+        }
+        else if (spellData[0] == "Heal") ;//do animation?
+        else if (spellData[0] == "Sheild") ;
+        else if (spellData[0] == "Boost") ;
+        else if (spellData[0] == "Repeat") ;
+        else; // Enemy Failed
+        if (sheild > 0) sheild--;
+        Chris_GameController.gameController.enemyFinished = true;
     }
 
 }

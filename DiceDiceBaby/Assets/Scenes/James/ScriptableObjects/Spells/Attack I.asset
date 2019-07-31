@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Attack I
   m_EditorClassIdentifier: 
   name: Attack I
-  description: Deals 2 damage.
+  description: Deals 1 damage.
   costs:
   - manaRequirement: 1
     price: 1
   dmgType: 0
-  dmg: 2
-  heal: 0
+  amount: 1
+  critAmount: 0
+  triggerEffect: 0
   applyShield: 0
   shieldTime: 0

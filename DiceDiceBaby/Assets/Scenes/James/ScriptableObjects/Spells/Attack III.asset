@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Attack III
   m_EditorClassIdentifier: 
   name: Attack III
-  description: Deal 4 damage.
+  description: Deal 5 damage.
   costs:
   - manaRequirement: 1
     price: 3
   dmgType: 0
-  dmg: 4
-  heal: 0
+  amount: 5
+  critAmount: 0
+  triggerEffect: 0
   applyShield: 0
   shieldTime: 0

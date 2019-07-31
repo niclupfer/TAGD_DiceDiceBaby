@@ -14,7 +14,9 @@ public class Chris_GameController : MonoBehaviour
     public Chris_Player Player;
     public GameObject PlayerCam;
     public GameObject PlayerUI;
-    bool enemyFinished = false;
+    public bool enemyFinished = false;
+    public bool enemySpellChosen = false;
+    string enemySpellData = "";
     int turnCount = 1;
     int maxTurns = 3;
     public Chris_ManaPanel enemyInfo;
@@ -63,6 +65,12 @@ public class Chris_GameController : MonoBehaviour
         if (dicePool[currentDie] != null) dicePool[currentDie].transform.Rotate(1, 1, 1);
 
         if (Player.getTurnFinished() && enemyFinished) nextTurn(); // we would tell the game to call the calculate functons here to update health for spells chosen
+
+        if(Player.spellChosen && enemySpellChosen)
+        {
+            Player.processMySpell();
+            Player.processEnemySpell(enemySpellData);
+        }
     }
 
     //Drafting functions
@@ -124,7 +132,8 @@ public class Chris_GameController : MonoBehaviour
             {
                 if (dicePool[i].diceInfo.id.Equals(diceName))
                 {
-                    dicePool[i].transform.position = new Vector3(100 * dicePool.Count, 100, 100);
+                    //dicePool[i].transform.position = new Vector3(100 * dicePool.Count, 100, 100);
+                    Destroy(dicePool[i].gameObject);
                     dicePool.RemoveAt(i);
                     whosPick.text = "Your Pick";
                     yourTurn = true;
@@ -347,12 +356,6 @@ public class Chris_GameController : MonoBehaviour
         return turnCount;
     }
 
-    public void enemyTurnFinish(string data)
-    {
-        //would be for choosen spell info
-        enemyFinished = true;
-    }//at the end of an enemys turn they could send info about the spell they used
-
     void updateEnemyInfo(string data)
     {
         string[] manaInfo = data.Split(',');
@@ -371,6 +374,12 @@ public class Chris_GameController : MonoBehaviour
 
     }//will occure after players roll to show eachothers mana and at the end of the turn to show updated health and sheild values
 
+    public void getEnemySpellInfo(string data)
+    {
+        enemySpellData = data;
+        enemySpellChosen = true;
+    }
+
     public void nextTurn()//reset everything for next turn
     {
         turnCount++;
@@ -378,7 +387,9 @@ public class Chris_GameController : MonoBehaviour
         else//reset
         {
             Player.resetInventory();
+            enemyInfo.resetManaInfo();
             enemyFinished = false;
+            enemySpellChosen = false;
         }
     }
 

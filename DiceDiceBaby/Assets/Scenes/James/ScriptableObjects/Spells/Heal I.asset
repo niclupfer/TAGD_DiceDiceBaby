@@ -18,7 +18,8 @@ MonoBehaviour:
   - manaRequirement: 0
     price: 1
   dmgType: 0
-  dmg: 0
-  heal: 2
+  amount: 2
+  critAmount: 0
+  triggerEffect: 0
   applyShield: 0
   shieldTime: 0

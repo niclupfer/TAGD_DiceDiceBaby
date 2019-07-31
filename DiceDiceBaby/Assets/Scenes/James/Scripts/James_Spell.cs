@@ -11,11 +11,9 @@ public class James_Spell : ScriptableObject
     public List<cost> costs;
 
     public James_Enum.damageType dmgType;
-    public int dmg;
-    public int heal;
-
-    public bool applyShield;
-    public int shieldTime;
+    public int amount;
+    public int critAmount;
+    public int triggerEffect;
 }
 
 [System.Serializable]
