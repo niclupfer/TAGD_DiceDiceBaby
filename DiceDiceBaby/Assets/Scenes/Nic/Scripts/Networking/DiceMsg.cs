@@ -15,6 +15,9 @@ public class DiceMsg
     public static short DraftTurn = 1006;
     public static short DraftPick= 1007;
 
+    public static short Mana = 1008;
+    public static short Spell = 1009;
+
     // X host battle
     // x join battle
     // X battle info
@@ -96,4 +99,16 @@ public class DraftPickMsg : MessageBase
 {
     public int fromPlayer;
     public string dice;
+}
+
+public class ManaMsg : MessageBase
+{
+    public int fromPlayer;
+    public string mana;
+}
+
+public class SpellMsg : MessageBase
+{
+    public int fromPlayer;
+    public string spell;
 }

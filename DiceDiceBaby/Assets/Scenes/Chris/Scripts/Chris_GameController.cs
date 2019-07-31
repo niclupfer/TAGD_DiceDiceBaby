@@ -356,7 +356,7 @@ public class Chris_GameController : MonoBehaviour
         return turnCount;
     }
 
-    void updateEnemyInfo(string data)
+    public void updateEnemyInfo(string data)
     {
         string[] manaInfo = data.Split(',');
 

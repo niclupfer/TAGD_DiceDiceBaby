@@ -30,6 +30,9 @@ public class DiceServer
         NetworkServer.RegisterHandler(DiceMsg.Ready, OnReady);
         NetworkServer.RegisterHandler(DiceMsg.DraftPick, OnDraftPick);
 
+        NetworkServer.RegisterHandler(DiceMsg.Mana, OnMana);
+        NetworkServer.RegisterHandler(DiceMsg.Spell, OnSpell);
+
         //NetworkServer.RegisterHandler(DiceMsg.Chat, OnChat);
 
         address = LocalIPAddress();
@@ -140,6 +143,24 @@ public class DiceServer
                     dice = msg.dice
                 });
 
+    }
+
+    void OnMana(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<ManaMsg>();
+
+        var enemyConnectionId = GetOtherPlayer(msg.fromPlayer).connectionId;
+
+        NetworkServer.SendToClient(enemyConnectionId, DiceMsg.Mana, msg);
+    }
+
+    void OnSpell(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<SpellMsg>();
+
+        var enemyConnectionId = GetOtherPlayer(msg.fromPlayer).connectionId;
+
+        NetworkServer.SendToClient(enemyConnectionId, DiceMsg.Spell, msg);
     }
 
     DicePlayer GetOtherPlayer(int from)

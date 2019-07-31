@@ -35,9 +35,13 @@ public class DiceClient
         client.RegisterHandler(MsgType.Connect, OnConnected);
         client.RegisterHandler(DiceMsg.Welcome, OnWelcome);
         client.RegisterHandler(DiceMsg.Lobby, OnLobby);
+
         client.RegisterHandler(DiceMsg.DicePool, OnDicePool);
         client.RegisterHandler(DiceMsg.DraftTurn, OnDraftTurn);
         client.RegisterHandler(DiceMsg.DraftPick, OnEnemyDraftPick);
+
+        client.RegisterHandler(DiceMsg.Mana, OnEnemyMana);
+        client.RegisterHandler(DiceMsg.Spell, OnEnemySpell);
 
         Debug.Log("trying to connect to "+serverIP);
         client.Connect(serverIP, 4444);
@@ -85,6 +89,18 @@ public class DiceClient
         client.Send(DiceMsg.DraftPick, new DraftPickMsg() { fromPlayer = playerNum, dice = dice });
     }
 
+    public void SendMyMana(string manaData)
+    {
+        client.Send(DiceMsg.Mana, new ManaMsg() { fromPlayer = playerNum, mana = manaData });
+    }
+
+    public void SendSpell(string spellData)
+    {
+        client.Send(DiceMsg.Spell, new SpellMsg() { fromPlayer = playerNum, spell = spellData });
+    }
+
+    // responses handlers
+
     public void OnLobby(NetworkMessage netMsg)
     {
         var msg = netMsg.ReadMessage<LobbyMsg>();
@@ -122,6 +138,18 @@ public class DiceClient
     {
         var msg = netMsg.ReadMessage<DraftPickMsg>();
         lobby.EnemyPicked(msg.dice);
+    }
+
+    public void OnEnemyMana(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<ManaMsg>();
+        lobby.LearnEnemyMana(msg.mana);
+    }
+
+    public void OnEnemySpell(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<SpellMsg>();
+        lobby.EnemyCastSpell(msg.spell);
     }
 
     DicePlayer You(DicePlayer[] all)

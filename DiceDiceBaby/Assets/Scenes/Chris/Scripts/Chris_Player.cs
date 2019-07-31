@@ -30,7 +30,7 @@ public class Chris_Player : MonoBehaviour
     public SpellCostPanel SpellList; //currently set to a buttion
     public GameObject RollButtion;
 
-
+    public LobbyMaster lobby;
 
     private void Start()
     {
@@ -85,7 +85,7 @@ public class Chris_Player : MonoBehaviour
 
     private void sendManaInfo()
     {
-        string s = "Mana ";
+        string s = "";
         for (int i = 0; i < manaValues.Length - 1; i++)
         {
             s += manaValues[i] + ",";
@@ -93,6 +93,7 @@ public class Chris_Player : MonoBehaviour
         s += manaValues[manaValues.Length - 1];
 
         //send
+        lobby.HeresMyMana(s);
     }
 
     void showSpellList()
@@ -244,7 +245,10 @@ public class Chris_Player : MonoBehaviour
             }
         }
         else spellString = "Fail";
+
         //send out data String
+        lobby.ImCastingSpell(spellString);
+
         turnFinsihed = true;
     }
 

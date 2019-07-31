@@ -35,6 +35,11 @@ public class LobbyMaster : MonoBehaviour
         statusText.text = "No game";
     }
 
+    public void ResetAll()
+    {
+        SceneManager.LoadScene("Main", LoadSceneMode.Single);
+    }
+
     public void Quit()
     {
         Application.Quit();
@@ -55,7 +60,7 @@ public class LobbyMaster : MonoBehaviour
     public void ShowTitle()
     {
         // just refresh the scene to be safe
-        SceneManager.LoadScene("Title", LoadSceneMode.Single);
+        SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
 
     public void ShowAvatars(int yours, int theirs)
@@ -150,16 +155,23 @@ public class LobbyMaster : MonoBehaviour
 
     public void HeresMyMana(string manaData)
     {
-        // TODO
+        myClient.SendMyMana(manaData);
     }
 
     public void LearnEnemyMana(string manaData)
     {
-        //gameController
-        //TODO
-
+        gameController.updateEnemyInfo(manaData);
     }
 
+    public void ImCastingSpell(string spellData)
+    {
+        myClient.SendSpell(spellData);
+    }
+
+    public void EnemyCastSpell(string spellData)
+    {
+        gameController.getEnemySpellInfo(spellData);
+    }
 
 
     public void HostGame()
