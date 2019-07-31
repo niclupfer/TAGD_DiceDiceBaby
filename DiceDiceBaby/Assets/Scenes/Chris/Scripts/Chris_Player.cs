@@ -10,9 +10,7 @@ public class Chris_Player : MonoBehaviour
     public List<Chris_Dice> diceInventory;
     public Vector3 diceLocation;
     bool rolledDice;
-    bool diceFinishedRolling;
-    bool turnFinsihed;
-    public bool spellChosen;
+    public bool diceFinishedRolling;
     int healthMax = 15;
     int health = 0;
 
@@ -20,9 +18,10 @@ public class Chris_Player : MonoBehaviour
     bool rolledCrit, RolledFail;
     int []manaValues = new int[6]; // b, r, g, white, black, star, skull
     public Chris_ManaPanel manaInfo;
-    
+
 
     //combat variables
+    public bool spellCast = false;
     int sheild = 0;
     int triggerEffect = 1;
     int addedDamage = 0;
@@ -78,7 +77,7 @@ public class Chris_Player : MonoBehaviour
                 manaInfo.updateManaInfo(manaValues, RolledFail);//update ui
                 sendManaInfo();
                 //send mana info to enemy through message
-                showSpellList();//show the spell list for picking
+                //showSpellList();//show the spell list for picking
             }
         }
     }
@@ -96,12 +95,12 @@ public class Chris_Player : MonoBehaviour
         lobby.HeresMyMana(s);
     }
 
-    void showSpellList()
+    public void showSpellList()
     {
         //sort spell player can choose from
         if(RolledFail)//dont show spell list
         {
-            spellChosen = true;
+            processMySpell();
         }
         else SpellList.activate(manaValues);//display for them to pick
 
@@ -117,11 +116,6 @@ public class Chris_Player : MonoBehaviour
             manaValues[i] = 0;
         }
         manaInfo.resetManaInfo();
-    }
-
-    public bool getTurnFinished()
-    {
-        return turnFinsihed;
     }
 
     public void changeHealth(int i, James_Enum.damageType d)
@@ -160,7 +154,6 @@ public class Chris_Player : MonoBehaviour
     {
         rolledDice = false;
         diceFinishedRolling = false;
-        turnFinsihed = false;
         resetManaVariables();
         foreach (Chris_Dice die in diceInventory)
         {
@@ -188,7 +181,7 @@ public class Chris_Player : MonoBehaviour
         ChosenSpell = spell;//select as chosen spell
         ChosenSpell.critAmount = manaValues[4];
         ChosenSpell.triggerEffect = triggerEffect;
-        spellChosen = true;
+        processMySpell();//process spell
     }
 
     public void processMySpell()
@@ -204,7 +197,7 @@ public class Chris_Player : MonoBehaviour
                 addedDamage = 0;
                 triggerEffect = 1;
             }
-            else if (ChosenSpell.name.Substring(0, 6).Equals("Boost"))//add dmg to next dmg
+            else if (ChosenSpell.name.Substring(0, 5).Equals("Boost"))//add dmg to next dmg
             {
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
@@ -213,7 +206,7 @@ public class Chris_Player : MonoBehaviour
                 spellString = "Boost," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = 1;
             }
-            else if (ChosenSpell.name.Substring(0, 6).Equals("Heal"))//healing
+            else if (ChosenSpell.name.Substring(0, 4).Equals("Heal"))//healing
             {
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
@@ -248,8 +241,7 @@ public class Chris_Player : MonoBehaviour
 
         //send out data String
         lobby.ImCastingSpell(spellString);
-
-        turnFinsihed = true;
+        spellCast = true;//Player spell done Proccesing let enemy spell go though in game controller
     }
 
     public void processEnemySpell(string data)
@@ -276,7 +268,7 @@ public class Chris_Player : MonoBehaviour
             else if (spellData[0] == "Repeat") ;
         }
         if (sheild > 0) sheild--;
-        Chris_GameController.gameController.enemyFinished = true;
+        Chris_GameController.gameController.roundFinished = true;//signal to game the next turn can happen
     }
 
 }

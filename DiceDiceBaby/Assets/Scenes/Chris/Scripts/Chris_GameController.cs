@@ -14,8 +14,9 @@ public class Chris_GameController : MonoBehaviour
     public Chris_Player Player;
     public GameObject PlayerCam;
     public GameObject PlayerUI;
-    public bool enemyFinished = false;
+    public bool roundFinished = false;
     public bool enemySpellChosen = false;
+    public bool enemyManaRecived = false;
     string enemySpellData = "";
     int turnCount = 1;
     int maxTurns = 3;
@@ -64,9 +65,14 @@ public class Chris_GameController : MonoBehaviour
     {
         if (dicePool[currentDie] != null) dicePool[currentDie].transform.Rotate(1, 1, 1);
 
-        if (Player.getTurnFinished() && enemyFinished) nextTurn(); // we would tell the game to call the calculate functons here to update health for spells chosen
+        if (roundFinished) nextTurn(); // we would tell the game to call the calculate functons here to update health for spells chosen
 
-        if(Player.spellChosen && enemySpellChosen)
+        if(Player.diceFinishedRolling && enemyManaRecived)//both players have rolled start spell select
+        {
+            Player.showSpellList();
+        }
+
+        if(Player.spellCast && enemySpellChosen)// player has processed their spell, process the enemies spell
         {
             Player.processMySpell();
             Player.processEnemySpell(enemySpellData);
@@ -360,7 +366,7 @@ public class Chris_GameController : MonoBehaviour
     {
         string[] manaInfo = data.Split(',');
 
-        int[] manaVals = new int[5];
+        int[] manaVals = new int[6];
 
         for (int i = 0; i < manaInfo.Length - 1; i++)
         {
@@ -388,14 +394,15 @@ public class Chris_GameController : MonoBehaviour
         {
             Player.resetInventory();
             enemyInfo.resetManaInfo();
-            enemyFinished = false;
+            roundFinished = false;
             enemySpellChosen = false;
+            enemyManaRecived = false;
         }
     }
 
     public void endGame()
     {
-        enemyFinished = false;
+        roundFinished = false;
         //ending the game happens here;
         Debug.Log("GameOver");
     }
