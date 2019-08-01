@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa767bd761513054b99569b2bcddba90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Red: {fileID: 21300000, guid: ae8e3956945cbfe45bbdf50dfd85abab, type: 3}
+  Red: {fileID: 21300000, guid: ddd86ea801fd7b745af664f73b30a7ff, type: 3}
   Blue: {fileID: 21300000, guid: eff54a125875a4647b0b46f981a06978, type: 3}
   Green: {fileID: 21300000, guid: 421fe7d5ec925c34a9ed5622e1b117c8, type: 3}
   White: {fileID: 21300000, guid: 1793f0ef6bba56b48aea36b3daf9134c, type: 3}
@@ -66,7 +66,6 @@ MonoBehaviour:
   Fail: {fileID: 21300000, guid: 046999e90f813de46845bc756c50238b, type: 3}
   Crit: {fileID: 21300000, guid: 790d0b411b3628e47aef618c7859b42c, type: 3}
   info:
-    name: 
     symbol: 0
     value: 0
   sprite: {fileID: 3374123546415818068}

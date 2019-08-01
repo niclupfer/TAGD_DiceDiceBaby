@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 2630935434946354610, guid: ff6bfd6203f12ef48b131b5ce47f5d8a,
         type: 3}
       propertyPath: m_Name
-      value: Side
+      value: D20Side
       objectReference: {fileID: 0}
     - target: {fileID: 7234858158838875933, guid: ff6bfd6203f12ef48b131b5ce47f5d8a,
         type: 3}
@@ -67,6 +67,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3363625513483937471, guid: ff6bfd6203f12ef48b131b5ce47f5d8a,
+        type: 3}
+      propertyPath: Red
+      value: 
+      objectReference: {fileID: 21300000, guid: ddd86ea801fd7b745af664f73b30a7ff,
+        type: 3}
     - target: {fileID: 369784540195732116, guid: ff6bfd6203f12ef48b131b5ce47f5d8a,
         type: 3}
       propertyPath: m_LocalScale.x
