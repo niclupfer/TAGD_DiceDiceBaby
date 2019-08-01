@@ -41,6 +41,7 @@ public class SpellCostPanel : MonoBehaviour
     public void castSpell()
     {
         Chris_Player.player.chooseSpell(currentSpell);
+        gameObject.SetActive(false);
     }
 
     public void activate(int []manaVals)

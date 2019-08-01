@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Chris_Player : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Chris_Player : MonoBehaviour
 
 
     //combat variables
+    public bool spellListUp = false;
     public bool spellCast = false;
     int sheild = 0;
     int triggerEffect = 1;
@@ -29,6 +31,11 @@ public class Chris_Player : MonoBehaviour
     public SpellCostPanel SpellList; //currently set to a buttion
     public GameObject RollButtion;
 
+    //heath and shield info
+    public TextMeshProUGUI healthValue;
+    public TextMeshProUGUI sheildValue;
+    public TextMeshProUGUI stackedValue;
+
     public LobbyMaster lobby;
 
     private void Start()
@@ -36,6 +43,7 @@ public class Chris_Player : MonoBehaviour
         resetManaVariables();
         player = this;
         health = healthMax;
+        sendPlayerData();
     }
 
     private void Update()
@@ -85,12 +93,13 @@ public class Chris_Player : MonoBehaviour
     private void sendManaInfo()
     {
         string s = "";
-        for (int i = 0; i < manaValues.Length - 1; i++)
+        for (int i = 0; i < manaValues.Length; i++)
         {
             s += manaValues[i] + ",";
         }
-        s += manaValues[manaValues.Length - 1];
-
+        if (RolledFail == true) s += "0";
+        else s += "1";
+        Debug.Log("Sending Enemy Mana: " + s);
         //send
         lobby.HeresMyMana(s);
     }
@@ -103,8 +112,7 @@ public class Chris_Player : MonoBehaviour
             processMySpell();
         }
         else SpellList.activate(manaValues);//display for them to pick
-
-        
+        spellListUp = true;
     }
 
     void resetManaVariables()
@@ -154,6 +162,8 @@ public class Chris_Player : MonoBehaviour
     {
         rolledDice = false;
         diceFinishedRolling = false;
+        spellListUp = false;
+        spellCast = false;
         resetManaVariables();
         foreach (Chris_Dice die in diceInventory)
         {
@@ -244,6 +254,16 @@ public class Chris_Player : MonoBehaviour
         spellCast = true;//Player spell done Proccesing let enemy spell go though in game controller
     }
 
+    public void sendPlayerData()
+    {
+        healthValue.text = health.ToString();
+        sheildValue.text = sheild.ToString();
+        stackedValue.text = addedDamage.ToString();
+        string send = health.ToString() + "," + sheild.ToString() + "," + addedDamage.ToString();
+
+        //send it
+    }
+
     public void processEnemySpell(string data)
     {
         //Attack,totalDamage,triggerEffect,critVal
@@ -268,6 +288,10 @@ public class Chris_Player : MonoBehaviour
             else if (spellData[0] == "Repeat") ;
         }
         if (sheild > 0) sheild--;
+
+        sendPlayerData();
+
+
         Chris_GameController.gameController.roundFinished = true;//signal to game the next turn can happen
     }
 
