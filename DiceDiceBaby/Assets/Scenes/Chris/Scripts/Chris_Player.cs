@@ -128,6 +128,7 @@ public class Chris_Player : MonoBehaviour
 
     public void changeHealth(int i, James_Enum.damageType d)
     {
+        Debug.Log("changing my health : " + i);
         if (d == James_Enum.damageType.poison)
         {
             health -= i;
@@ -136,6 +137,7 @@ public class Chris_Player : MonoBehaviour
             health -= i;
         else if (d == James_Enum.damageType.healing) health += i;
         checkHealthOverload();
+        Debug.Log("my health " + health);
     }
 
     void checkHealthOverload()
@@ -262,6 +264,7 @@ public class Chris_Player : MonoBehaviour
         string send = health.ToString() + "," + sheild.ToString() + "," + addedDamage.ToString();
 
         //send it
+        lobby.HeresMyInfo(send);
     }
 
     public void processEnemySpell(string data)

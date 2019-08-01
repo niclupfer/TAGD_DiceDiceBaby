@@ -103,13 +103,13 @@ public class Chris_GameController : MonoBehaviour
         if (playerNum == yourNum)
             yourTurn = true;
 
-        if (playerNum == 1)
+        if (yourTurn)
         {
-            whosPick.text = "Player One Choosing";
+            whosPick.text = "Your Pick";
         }
         else
         {
-            whosPick.text = "Player Two Choosing";
+            whosPick.text = "Other Player Choosing";
         }
     }
 
@@ -367,6 +367,7 @@ public class Chris_GameController : MonoBehaviour
 
     public void getEnemyInfo(string data)
     {
+        Debug.Log("i got enemy info: " + data);
         string[] D = data.Split(',');
         enemyHealthValue.text = D[0].ToString();
         enemySheildValue.text = D[1].ToString();

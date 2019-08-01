@@ -42,6 +42,7 @@ public class DiceClient
 
         client.RegisterHandler(DiceMsg.Mana, OnEnemyMana);
         client.RegisterHandler(DiceMsg.Spell, OnEnemySpell);
+        client.RegisterHandler(DiceMsg.PlayerInfo, OnEnemyInfo);
 
         Debug.Log("trying to connect to "+serverIP);
         client.Connect(serverIP, 4444);
@@ -99,6 +100,11 @@ public class DiceClient
         client.Send(DiceMsg.Spell, new SpellMsg() { fromPlayer = playerNum, spell = spellData });
     }
 
+    public void SendMyInfo(string playerInfo)
+    {
+        client.Send(DiceMsg.PlayerInfo, new PlayerInfoMsg() { fromPlayer = playerNum, info = playerInfo });
+    }
+
     // responses handlers
 
     public void OnLobby(NetworkMessage netMsg)
@@ -150,6 +156,12 @@ public class DiceClient
     {
         var msg = netMsg.ReadMessage<SpellMsg>();
         lobby.EnemyCastSpell(msg.spell);
+    }
+
+    public void OnEnemyInfo(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<PlayerInfoMsg>();
+        lobby.EnemyInfo(msg.info);
     }
 
     DicePlayer You(DicePlayer[] all)

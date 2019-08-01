@@ -17,6 +17,7 @@ public class DiceMsg
 
     public static short Mana = 1008;
     public static short Spell = 1009;
+    public static short PlayerInfo = 1010;
 
     // X host battle
     // x join battle
@@ -111,4 +112,10 @@ public class SpellMsg : MessageBase
 {
     public int fromPlayer;
     public string spell;
+}
+
+public class PlayerInfoMsg : MessageBase
+{
+    public int fromPlayer;
+    public string info;
 }
