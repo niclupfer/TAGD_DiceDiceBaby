@@ -203,6 +203,7 @@ public class Chris_Player : MonoBehaviour
         {
             if (ChosenSpell.name.Substring(0, 6).Equals("Attack"))//attack spell
             {
+                Debug.Log("I'm Attacking");
                 ChosenSpell.amount += addedDamage;//put added dmg in
                 spellString = "Attack," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount; //dmg = (basedmg + crit dmg) * trigger effect 
                                                                                                                    //reset trigger effect and added dmg
@@ -211,6 +212,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 5).Equals("Boost"))//add dmg to next dmg
             {
+                Debug.Log("I'm Boosting");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     addedDamage += ChosenSpell.amount + 3 * ChosenSpell.critAmount;//Boost = amount + ctit * 3
@@ -220,6 +222,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 4).Equals("Heal"))//healing
             {
+                Debug.Log("I'm healing");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     changeHealth(ChosenSpell.amount + 3 * ChosenSpell.critAmount, ChosenSpell.dmgType);// healing = amount + crit * 3
@@ -229,6 +232,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 6).Equals("Repeat"))//trigger effect
             {
+                Debug.Log("I'm repeating");
                 int newTriggerEffect = 0;//temp for the new tigger effect 
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
@@ -240,6 +244,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 6).Equals("Sheild"))
             {
+                Debug.Log("I'm sheilding");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     sheild += ChosenSpell.amount;
@@ -274,6 +279,7 @@ public class Chris_Player : MonoBehaviour
         //Shield,totalAmount,triggerEffect,critVal
         //Boost,totalAmount,triggerEffect,critVal
         //Repeat,totalAmount,triggerEffect,critVal
+        Debug.Log("EnemySpellData: " + data);
         if(!data.Equals("Fail"))
         {
             string[] spellData = data.Split(',');
