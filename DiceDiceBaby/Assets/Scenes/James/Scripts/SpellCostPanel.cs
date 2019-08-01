@@ -65,6 +65,7 @@ public class SpellCostPanel : MonoBehaviour
             if (spellPassed)
             {
                 spell.enable();
+                UpdateSpellPanels(spell);
                 count++;
             }
         }

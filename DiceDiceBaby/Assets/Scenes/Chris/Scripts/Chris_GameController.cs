@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -19,7 +20,7 @@ public class Chris_GameController : MonoBehaviour
     public bool enemyManaRecived = false;
     string enemySpellData = "";
     int turnCount = 1;
-    int maxTurns = 3;
+    int maxTurns = 100;
     public Chris_ManaPanel enemyInfo;
     
 
@@ -68,18 +69,16 @@ public class Chris_GameController : MonoBehaviour
     private void Update()
     {
         if (dicePool[currentDie] != null) dicePool[currentDie].transform.Rotate(1, 1, 1);
-
         if (roundFinished) nextTurn(); // we would tell the game to call the calculate functons here to update health for spells chosen
-
         if(!Player.spellListUp && Player.diceFinishedRolling && enemyManaRecived)//both players have rolled start spell select
         {
             Player.showSpellList();
         }
-
         if (Player.spellCast && enemySpellChosen && roundFinished == false)// player has processed their spell, process the enemies spell
         {
             Player.processEnemySpell(enemySpellData);
         }
+        if (turnCount > 2 && (Player.getHealth() <= 0 || int.Parse(enemyHealthValue.text) <= 0)) endGame();
     }
 
     //Drafting functions
@@ -418,8 +417,7 @@ public class Chris_GameController : MonoBehaviour
 
     public void endGame()
     {
-        roundFinished = false;
-        //ending the game happens here;
+        GameOverText.t.gameOver(Player.getHealth(), int.Parse(enemyHealthValue.text));
         Debug.Log("GameOver");
     }
 

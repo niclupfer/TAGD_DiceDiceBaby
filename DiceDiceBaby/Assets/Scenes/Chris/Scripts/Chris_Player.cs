@@ -143,7 +143,11 @@ public class Chris_Player : MonoBehaviour
     void checkHealthOverload()
     {
         if (health > healthMax) health = healthMax;
-        else if (health <= 0) Chris_GameController.gameController.endGame();
+    }
+
+    public int getHealth()
+    {
+        return health;
     }
 
     public int getScore()
@@ -242,15 +246,15 @@ public class Chris_Player : MonoBehaviour
                 spellString = "Repeat," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = newTriggerEffect;
             }
-            else if (ChosenSpell.name.Substring(0, 6).Equals("Sheild"))
+            else if (ChosenSpell.name.Substring(0, 6).Equals("Shield"))
             {
-                Debug.Log("I'm sheilding");
+                Debug.Log("I'm shielding");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     sheild += ChosenSpell.amount;
                     if (ChosenSpell.critAmount > 0) changeHealth(ChosenSpell.critAmount * 3, James_Enum.damageType.healing);//if crit get health
                 }
-                spellString = "Sheild," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
+                spellString = "Shield," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = 1;
             }
         }
@@ -291,8 +295,8 @@ public class Chris_Player : MonoBehaviour
 
                 changeHealth(totalDamage, James_Enum.damageType.direct);
             }
-            else if (spellData[0] == "Heal") ;//do animation?
-            else if (spellData[0] == "Sheild") ;
+            else if (spellData[0] == "Heal") ;//do animation/sound?
+            else if (spellData[0] == "Shield") ;
             else if (spellData[0] == "Boost") ;
             else if (spellData[0] == "Repeat") ;
         }
