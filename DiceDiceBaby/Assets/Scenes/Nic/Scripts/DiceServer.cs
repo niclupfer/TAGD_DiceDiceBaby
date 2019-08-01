@@ -32,6 +32,7 @@ public class DiceServer
 
         NetworkServer.RegisterHandler(DiceMsg.Mana, OnMana);
         NetworkServer.RegisterHandler(DiceMsg.Spell, OnSpell);
+        NetworkServer.RegisterHandler(DiceMsg.PlayerInfo, OnPlayerInfo);
 
         //NetworkServer.RegisterHandler(DiceMsg.Chat, OnChat);
 
@@ -161,6 +162,15 @@ public class DiceServer
         var enemyConnectionId = GetOtherPlayer(msg.fromPlayer).connectionId;
 
         NetworkServer.SendToClient(enemyConnectionId, DiceMsg.Spell, msg);
+    }
+
+    void OnPlayerInfo(NetworkMessage netMsg)
+    {
+        var msg = netMsg.ReadMessage<PlayerInfoMsg>();
+
+        var enemyConnectionId = GetOtherPlayer(msg.fromPlayer).connectionId;
+
+        NetworkServer.SendToClient(enemyConnectionId, DiceMsg.PlayerInfo, msg);
     }
 
     DicePlayer GetOtherPlayer(int from)

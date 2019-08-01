@@ -43,6 +43,10 @@ public class Chris_GameController : MonoBehaviour
     public int currentDie;
     public Text whosPick;
 
+    public TextMeshProUGUI enemyHealthValue;
+    public TextMeshProUGUI enemySheildValue;
+    public TextMeshProUGUI enemyStackedValue;
+
     public LobbyMaster lobby;
     
     //temp variabls for testing
@@ -67,14 +71,13 @@ public class Chris_GameController : MonoBehaviour
 
         if (roundFinished) nextTurn(); // we would tell the game to call the calculate functons here to update health for spells chosen
 
-        if(Player.diceFinishedRolling && enemyManaRecived)//both players have rolled start spell select
+        if(!Player.spellListUp && Player.diceFinishedRolling && enemyManaRecived)//both players have rolled start spell select
         {
             Player.showSpellList();
         }
 
-        if(Player.spellCast && enemySpellChosen)// player has processed their spell, process the enemies spell
+        if (Player.spellCast && enemySpellChosen && roundFinished == false)// player has processed their spell, process the enemies spell
         {
-            Player.processMySpell();
             Player.processEnemySpell(enemySpellData);
         }
     }
@@ -100,13 +103,13 @@ public class Chris_GameController : MonoBehaviour
         if (playerNum == yourNum)
             yourTurn = true;
 
-        if (playerNum == 1)
+        if (yourTurn)
         {
-            whosPick.text = "Player One Choosing";
+            whosPick.text = "Your Pick";
         }
         else
         {
-            whosPick.text = "Player Two Choosing";
+            whosPick.text = "Other Player Choosing";
         }
     }
 
@@ -362,9 +365,20 @@ public class Chris_GameController : MonoBehaviour
         return turnCount;
     }
 
+    public void getEnemyInfo(string data)
+    {
+        Debug.Log("i got enemy info: " + data);
+        string[] D = data.Split(',');
+        enemyHealthValue.text = D[0].ToString();
+        enemySheildValue.text = D[1].ToString();
+        enemyStackedValue.text = D[2].ToString();
+    }
+
     public void updateEnemyInfo(string data)
     {
         string[] manaInfo = data.Split(',');
+
+        Debug.Log("Enemy Data " + data + "  -- Data at 6; " + manaInfo[6]);
 
         int[] manaVals = new int[6];
 
@@ -372,11 +386,13 @@ public class Chris_GameController : MonoBehaviour
         {
             manaVals[i] = int.Parse(manaInfo[i]);
         }
-        if (manaInfo[5].Equals("0"))
+        if (manaInfo[6].Equals("0"))
         {
-            enemyInfo.updateManaInfo(manaVals, false);
+            enemyInfo.updateManaInfo(manaVals, true);
         }
-        else enemyInfo.updateManaInfo(manaVals, true);
+        else enemyInfo.updateManaInfo(manaVals, false);
+
+        enemyManaRecived = true;
 
     }//will occure after players roll to show eachothers mana and at the end of the turn to show updated health and sheild values
 

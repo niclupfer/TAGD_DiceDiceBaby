@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Chris_Player : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Chris_Player : MonoBehaviour
 
 
     //combat variables
+    public bool spellListUp = false;
     public bool spellCast = false;
     int sheild = 0;
     int triggerEffect = 1;
@@ -29,6 +31,11 @@ public class Chris_Player : MonoBehaviour
     public SpellCostPanel SpellList; //currently set to a buttion
     public GameObject RollButtion;
 
+    //heath and shield info
+    public TextMeshProUGUI healthValue;
+    public TextMeshProUGUI sheildValue;
+    public TextMeshProUGUI stackedValue;
+
     public LobbyMaster lobby;
 
     private void Start()
@@ -36,6 +43,7 @@ public class Chris_Player : MonoBehaviour
         resetManaVariables();
         player = this;
         health = healthMax;
+        sendPlayerData();
     }
 
     private void Update()
@@ -85,12 +93,13 @@ public class Chris_Player : MonoBehaviour
     private void sendManaInfo()
     {
         string s = "";
-        for (int i = 0; i < manaValues.Length - 1; i++)
+        for (int i = 0; i < manaValues.Length; i++)
         {
             s += manaValues[i] + ",";
         }
-        s += manaValues[manaValues.Length - 1];
-
+        if (RolledFail == true) s += "0";
+        else s += "1";
+        Debug.Log("Sending Enemy Mana: " + s);
         //send
         lobby.HeresMyMana(s);
     }
@@ -103,8 +112,7 @@ public class Chris_Player : MonoBehaviour
             processMySpell();
         }
         else SpellList.activate(manaValues);//display for them to pick
-
-        
+        spellListUp = true;
     }
 
     void resetManaVariables()
@@ -120,6 +128,7 @@ public class Chris_Player : MonoBehaviour
 
     public void changeHealth(int i, James_Enum.damageType d)
     {
+        Debug.Log("changing my health : " + i);
         if (d == James_Enum.damageType.poison)
         {
             health -= i;
@@ -128,6 +137,7 @@ public class Chris_Player : MonoBehaviour
             health -= i;
         else if (d == James_Enum.damageType.healing) health += i;
         checkHealthOverload();
+        Debug.Log("my health " + health);
     }
 
     void checkHealthOverload()
@@ -154,6 +164,8 @@ public class Chris_Player : MonoBehaviour
     {
         rolledDice = false;
         diceFinishedRolling = false;
+        spellListUp = false;
+        spellCast = false;
         resetManaVariables();
         foreach (Chris_Dice die in diceInventory)
         {
@@ -191,6 +203,7 @@ public class Chris_Player : MonoBehaviour
         {
             if (ChosenSpell.name.Substring(0, 6).Equals("Attack"))//attack spell
             {
+                Debug.Log("I'm Attacking");
                 ChosenSpell.amount += addedDamage;//put added dmg in
                 spellString = "Attack," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount; //dmg = (basedmg + crit dmg) * trigger effect 
                                                                                                                    //reset trigger effect and added dmg
@@ -199,6 +212,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 5).Equals("Boost"))//add dmg to next dmg
             {
+                Debug.Log("I'm Boosting");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     addedDamage += ChosenSpell.amount + 3 * ChosenSpell.critAmount;//Boost = amount + ctit * 3
@@ -208,6 +222,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 4).Equals("Heal"))//healing
             {
+                Debug.Log("I'm healing");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     changeHealth(ChosenSpell.amount + 3 * ChosenSpell.critAmount, ChosenSpell.dmgType);// healing = amount + crit * 3
@@ -217,6 +232,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 6).Equals("Repeat"))//trigger effect
             {
+                Debug.Log("I'm repeating");
                 int newTriggerEffect = 0;//temp for the new tigger effect 
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
@@ -228,6 +244,7 @@ public class Chris_Player : MonoBehaviour
             }
             else if (ChosenSpell.name.Substring(0, 6).Equals("Sheild"))
             {
+                Debug.Log("I'm sheilding");
                 for (int i = 0; i < triggerEffect; i++)//trigger i amount of times
                 {
                     sheild += ChosenSpell.amount;
@@ -244,6 +261,17 @@ public class Chris_Player : MonoBehaviour
         spellCast = true;//Player spell done Proccesing let enemy spell go though in game controller
     }
 
+    public void sendPlayerData()
+    {
+        healthValue.text = health.ToString();
+        sheildValue.text = sheild.ToString();
+        stackedValue.text = addedDamage.ToString();
+        string send = health.ToString() + "," + sheild.ToString() + "," + addedDamage.ToString();
+
+        //send it
+        lobby.HeresMyInfo(send);
+    }
+
     public void processEnemySpell(string data)
     {
         //Attack,totalDamage,triggerEffect,critVal
@@ -251,6 +279,7 @@ public class Chris_Player : MonoBehaviour
         //Shield,totalAmount,triggerEffect,critVal
         //Boost,totalAmount,triggerEffect,critVal
         //Repeat,totalAmount,triggerEffect,critVal
+        Debug.Log("EnemySpellData: " + data);
         if(!data.Equals("Fail"))
         {
             string[] spellData = data.Split(',');
@@ -268,6 +297,10 @@ public class Chris_Player : MonoBehaviour
             else if (spellData[0] == "Repeat") ;
         }
         if (sheild > 0) sheild--;
+
+        sendPlayerData();
+
+
         Chris_GameController.gameController.roundFinished = true;//signal to game the next turn can happen
     }
 

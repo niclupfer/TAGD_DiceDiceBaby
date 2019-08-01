@@ -27,6 +27,8 @@ public class LobbyMaster : MonoBehaviour
 
     public Chris_GameController gameController;
     public GameObject draftingContainer;
+
+    public GameObject clickSFX;
     
     void Start()
     {
@@ -152,7 +154,6 @@ public class LobbyMaster : MonoBehaviour
         myClient.SendDicePick(diceName);
     }
 
-
     public void HeresMyMana(string manaData)
     {
         myClient.SendMyMana(manaData);
@@ -173,6 +174,15 @@ public class LobbyMaster : MonoBehaviour
         gameController.getEnemySpellInfo(spellData);
     }
 
+    public void HeresMyInfo(string playerInfo)
+    {
+        myClient.SendMyInfo(playerInfo);
+    }
+
+    public void EnemyInfo(string enemyInfo)
+    {
+        gameController.getEnemyInfo(enemyInfo);
+    }
 
     public void HostGame()
     {
@@ -184,6 +194,8 @@ public class LobbyMaster : MonoBehaviour
         myClient = new DiceClient(myServer.address, this, false);
 
         ShowLobby();
+
+        Instantiate(clickSFX);
     }
 
     public void JoinGame()
@@ -194,6 +206,8 @@ public class LobbyMaster : MonoBehaviour
             statusText.text = "Looking for Battle";
             ConnectClient(address);
             ShowLobby();
+
+            Instantiate(clickSFX);
         }
     }
 
