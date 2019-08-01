@@ -17,9 +17,7 @@ MonoBehaviour:
   costs:
   - manaRequirement: 0
     price: 1
-  dmgType: 0
+  dmgType: 2
   amount: 2
   critAmount: 0
   triggerEffect: 0
-  applyShield: 0
-  shieldTime: 0

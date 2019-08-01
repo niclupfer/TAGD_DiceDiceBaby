@@ -21,5 +21,3 @@ MonoBehaviour:
   amount: 2
   critAmount: 0
   triggerEffect: 0
-  applyShield: 0
-  shieldTime: 0
