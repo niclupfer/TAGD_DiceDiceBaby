@@ -22,7 +22,11 @@ public class Chris_GameController : MonoBehaviour
     int turnCount = 1;
     int maxTurns = 100;
     public Chris_ManaPanel enemyInfo;
-    
+
+    //Player Pictures 
+    //Player Pictures 
+    public GameObject yourPicture;
+    public GameObject enemyPicture;
 
     //draft phase vars
     public static bool pickPhase = true;
@@ -44,14 +48,17 @@ public class Chris_GameController : MonoBehaviour
     public int currentDie;
     public Text whosPick;
 
+    //enemyInfo
     public TextMeshProUGUI enemyHealthValue;
     public TextMeshProUGUI enemySheildValue;
     public TextMeshProUGUI enemyStackedValue;
+    public TextMeshProUGUI enemyTriggerValue;
 
     public LobbyMaster lobby;
     
     //temp variabls for testing
     public GameObject nextTurnButtion;
+
 
     private void Awake()
     {
@@ -165,6 +172,13 @@ public class Chris_GameController : MonoBehaviour
             draftCam.SetActive(false);
             draftCanvas.SetActive(false);
             //disable draft came and gui and swtch player to their screen
+            yourPicture.transform.SetParent(PlayerUI.transform);
+            yourPicture.transform.localPosition = new Vector3(332,-108);
+            yourPicture.transform.localScale = new Vector3(.75f, .75f);
+            enemyPicture.transform.SetParent(PlayerUI.transform);
+            enemyPicture.transform.localPosition = new Vector3(-329, 110);
+            enemyPicture.transform.localScale = new Vector3(.75f, .75f);
+
         }
         else
         {
@@ -228,22 +242,22 @@ public class Chris_GameController : MonoBehaviour
         {
             GameObject newDie;
             ScriptableDice newDiceInfo;
-            int r = Random.Range(0, 3);
-            if (r == 0)
+            //int r = Random.Range(0, 3);
+            if (i < 3)
             {
                 int random = Random.Range(0, d6Dice.Length - 1);
                 newDie = Instantiate(d6Prefab,dicePoolLocation.transform);
                 newDiceInfo = d6Dice[random];
                 Debug.Log("D6 Index " + random);
             }
-            else if (r == 1)
+            else if (i < 6)
             {
                 int random = Random.Range(0, d8Dice.Length - 1);
                 newDie = Instantiate(d8Prefab, dicePoolLocation.transform);
                 newDiceInfo = d8Dice[random];
                 Debug.Log("D8 Index " + random);
             }
-            else if(r == 2)
+            else if(i < 8)
             {
                 int random = Random.Range(0, d12Dice.Length - 1);
                 newDie = Instantiate(d12Prefab, dicePoolLocation.transform);
@@ -262,7 +276,6 @@ public class Chris_GameController : MonoBehaviour
             dieComponent.updateSides();
             dicePool.Add(dieComponent);
         }
-
         currentDie = 0;
         updateDiceInfo();
         DiceCircle.resetAngle();
@@ -345,7 +358,7 @@ public class Chris_GameController : MonoBehaviour
                         break;
                     }
                 }
-
+                D.updateSides();
                 dicePool.Add(D);
             }
         }
@@ -371,6 +384,7 @@ public class Chris_GameController : MonoBehaviour
         enemyHealthValue.text = D[0].ToString();
         enemySheildValue.text = D[1].ToString();
         enemyStackedValue.text = D[2].ToString();
+        enemyTriggerValue.text = D[3].ToString();
     }
 
     public void updateEnemyInfo(string data)

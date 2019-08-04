@@ -35,6 +35,7 @@ public class Chris_Player : MonoBehaviour
     public TextMeshProUGUI healthValue;
     public TextMeshProUGUI sheildValue;
     public TextMeshProUGUI stackedValue;
+    public TextMeshProUGUI triggerValue;
 
     public LobbyMaster lobby;
 
@@ -270,7 +271,8 @@ public class Chris_Player : MonoBehaviour
         healthValue.text = health.ToString();
         sheildValue.text = sheild.ToString();
         stackedValue.text = addedDamage.ToString();
-        string send = health.ToString() + "," + sheild.ToString() + "," + addedDamage.ToString();
+        triggerValue.text = triggerEffect.ToString();
+        string send = health.ToString() + "," + sheild.ToString() + "," + addedDamage.ToString() + "," + triggerEffect.ToString();
 
         //send it
         lobby.HeresMyInfo(send);
