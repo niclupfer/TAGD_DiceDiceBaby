@@ -126,13 +126,13 @@ public class Chris_GameController : MonoBehaviour
             if (yourTurn)//player ones pick
             {
                 //send data to enemy for what dice you chose
-                string diceName = dicePool[currentDie].diceInfo.name;
+                string diceName = dicePool[currentDie].diceInfo.id;
                 Player.addDice(dicePool[currentDie]);
                 dicePool.RemoveAt(currentDie);
                 whosPick.text = "Other Player Choosing";
                 yourTurn = false;
                 checkDicePhaseState();
-
+                
                 lobby.IPickedDie(diceName);
             }
         }
@@ -141,6 +141,7 @@ public class Chris_GameController : MonoBehaviour
 
     public void enemyPickDie(string diceName)//would be called by the listener fucntion according to what string is recived
     {
+        Debug.Log("EnemyPicked: " + diceName);
         if(!yourTurn)
         {
             for (int i = 0; i < dicePool.Count; i++)
@@ -238,7 +239,7 @@ public class Chris_GameController : MonoBehaviour
         //Only host should do this?
 
         dicePool.Clear();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 12; i++)
         {
             GameObject newDie;
             ScriptableDice newDiceInfo;
@@ -257,7 +258,7 @@ public class Chris_GameController : MonoBehaviour
                 newDiceInfo = d8Dice[random];
                 Debug.Log("D8 Index " + random);
             }
-            else if(i < 8)
+            else if(i < 9)
             {
                 int random = Random.Range(0, d12Dice.Length - 1);
                 newDie = Instantiate(d12Prefab, dicePoolLocation.transform);
