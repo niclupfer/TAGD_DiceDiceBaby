@@ -28,6 +28,9 @@ public class LobbyMaster : MonoBehaviour
     public Chris_GameController gameController;
     public GameObject draftingContainer;
 
+    public AudioClip battleMusic;
+    public AudioSource backgroundMusic;
+
     public GameObject clickSFX;
     
     void Start()
@@ -77,6 +80,8 @@ public class LobbyMaster : MonoBehaviour
         Debug.Log("showing drafting");
         lobbyScreen.SetActive(false);
         draftingContainer.SetActive(true);
+        backgroundMusic.clip = battleMusic;
+        backgroundMusic.Play();
     }
 
     public void BattleJoined()

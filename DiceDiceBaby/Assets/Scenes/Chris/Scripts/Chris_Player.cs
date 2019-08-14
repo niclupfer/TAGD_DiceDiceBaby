@@ -214,6 +214,8 @@ public class Chris_Player : MonoBehaviour
                                                                                                                    //reset trigger effect and added dmg
                 addedDamage = 0;
                 triggerEffect = 1;
+
+                SoundManager.soundManager.playAttack();
             }
             else if (ChosenSpell.name.Substring(0, 5).Equals("Boost"))//add dmg to next dmg
             {
@@ -224,6 +226,8 @@ public class Chris_Player : MonoBehaviour
                 }
                 spellString = "Boost," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = 1;
+
+                SoundManager.soundManager.playCharge();
             }
             else if (ChosenSpell.name.Substring(0, 4).Equals("Heal"))//healing
             {
@@ -234,6 +238,8 @@ public class Chris_Player : MonoBehaviour
                 }
                 spellString = "Heal," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = 1;
+
+                SoundManager.soundManager.playHeal();
             }
             else if (ChosenSpell.name.Substring(0, 6).Equals("Repeat"))//trigger effect
             {
@@ -246,6 +252,8 @@ public class Chris_Player : MonoBehaviour
                 }
                 spellString = "Repeat," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = newTriggerEffect;
+
+                SoundManager.soundManager.playCharge();
             }
             else if (ChosenSpell.name.Substring(0, 6).Equals("Shield"))
             {
@@ -257,6 +265,8 @@ public class Chris_Player : MonoBehaviour
                 }
                 spellString = "Shield," + ChosenSpell.amount + "," + triggerEffect + "," + ChosenSpell.critAmount;
                 triggerEffect = 1;
+
+                SoundManager.soundManager.playReflect();
             }
         }
         else spellString = "Fail";
@@ -294,13 +304,13 @@ public class Chris_Player : MonoBehaviour
                 int totalDamage = (int.Parse(spellData[1]) + int.Parse(spellData[3])) * int.Parse(spellData[2]); //should crit go through trigger effect?
 
                 //playAnimation maybe do it trigger effect amount of times with dmg vals popping up
-
+                SoundManager.soundManager.playAttack();
                 changeHealth(totalDamage, James_Enum.damageType.direct);
             }
-            else if (spellData[0] == "Heal") ;//do animation/sound?
-            else if (spellData[0] == "Shield") ;
-            else if (spellData[0] == "Boost") ;
-            else if (spellData[0] == "Repeat") ;
+            else if (spellData[0] == "Heal") SoundManager.soundManager.playHeal();//do animation/sound?
+            else if (spellData[0] == "Shield") SoundManager.soundManager.playReflect();
+            else if (spellData[0] == "Boost") SoundManager.soundManager.playCharge();
+            else if (spellData[0] == "Repeat") SoundManager.soundManager.playCharge(); ;
         }
         if (sheild > 0) sheild--;
 

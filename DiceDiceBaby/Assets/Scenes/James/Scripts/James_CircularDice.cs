@@ -28,11 +28,37 @@ public class James_CircularDice : MonoBehaviour
 
     public void rotateRight()
     {
-        transform.Rotate(0, 0,(-360f)/ Chris_GameController.gameController.dicePool.Count);
+        //transform.Rotate(0, 0,(-360f)/ Chris_GameController.gameController.dicePool.Count);
+        StartCoroutine(goRight(transform.eulerAngles.z + (-360f) / Chris_GameController.gameController.dicePool.Count));
+    }
+
+    private IEnumerator goRight(float f)
+    {
+        float timePassed = 0;
+        while (timePassed <= .5)
+        {
+            transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, f, timePassed / .5f));
+            timePassed += Time.deltaTime;
+            yield return null;
+        }
+        yield break;
     }
 
     public void rotateLeft()
     {
-        transform.Rotate(0, 0, (360f) / Chris_GameController.gameController.dicePool.Count);
+        //transform.Rotate(0, 0, (360f) / Chris_GameController.gameController.dicePool.Count);
+        StartCoroutine(goLeft(transform.eulerAngles.z + (360f) / Chris_GameController.gameController.dicePool.Count));
+    }
+
+    private IEnumerator goLeft(float f)
+    {
+        float timePassed = 0;
+        while (timePassed <= .5)
+        {
+            transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, f, timePassed / .5f));
+            timePassed += Time.deltaTime;
+            yield return null;
+        }
+        yield break;
     }
 }
