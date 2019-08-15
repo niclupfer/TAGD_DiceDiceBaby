@@ -196,7 +196,7 @@ public class Chris_Player : MonoBehaviour
     public void chooseSpell(James_Spell spell)
     {
         ChosenSpell = spell;//select as chosen spell
-        ChosenSpell.critAmount = manaValues[4];
+        ChosenSpell.critAmount = manaValues[5];
         ChosenSpell.triggerEffect = triggerEffect;
         processMySpell();//process spell
     }
